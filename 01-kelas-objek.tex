@@ -1,0 +1,143 @@
+\chapter{Kelas dan Objek}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami pengertian dan perbedaan Kelas dan Objek dan mampu mengimplementasikan konsep tersebut pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Dalam paradigma pemrograman berorientasi objek, untuk membangun sebuah sistem atau aplikasi yang lengkap, sistem tersebut akan dipecah menjadi bagian-bagian kecil yang disebut dengan objek. Tiap-tiap objek yang terbentuk akan dapat saling berinteraksi membentuk sebuah sistem yang dapat digunakan.
+
+Untuk mempermudah pembentukan objek-objek yang akan digunakan, maka diperlukan klasifikasi-klasifikasi tertentu berdasarkan kesamaan ciri dan fitur, yang disebut dengan kelas. Dengan kata lain bahwa kelas itu sebetulnya adalah deklarasi dari beberapa objek yang nantinya akan digunakan dalam membangun sebuah sistem.
+
+Bagaimana implementasi kedua istilah tersebut dalam bahasa pemrograman Java, mari kita lanjutkan ke bagian \textbf{Praktek}.
+
+\section{Praktek}
+
+\subsection{Kelas}
+
+Apabila kita menggunakan bahasa pemrograman Java, aturan yang harus kita ikuti adalah pada saat pembentukan deklarasi sebuah kelas, nama kelas dan nama berkas yang dibuat harus sama persis sampai ke besar dan kecilnya huruf.
+
+Sebagai contoh, apabila kita ingin membuat sebuah kelas \texttt{Mahasiswa}, maka kita akan membuat sebuah berkas dengan nama \texttt{Mahasiswa.java}, yang didalamnya akan berisi kode berikut :
+
+\begin{lstlisting}{java}
+public class Mahasiswa {}
+\end{lstlisting}
+
+Agar sebuah aplikasi dapat dijalankan dan dilihat hasilnya, maka kita perlu menambahkan sebuah \textit{method} dengan nama \texttt{main} di dalam kelas tersebut, sehingga isi kodenya akan menjadi seperti berikut :
+
+\begin{lstlisting}{Java}
+public class Mahasiswa{
+  public static void main(String args[]) {
+  }
+}
+\end{lstlisting}
+
+Seluruh aksi program yang dijalankan akan dimulai dari \textit{method} \texttt{main} ini. Misalkan kita coba agar aplikasi dapat menampilkan tulisan selamat datang apabila dijalankan, kodenya akan kita ubah menjadi seperti berikut :
+
+\begin{lstlisting}{java}
+public class Mahasiswa {
+  public static void main(String args[]) {
+    System.out.println("Selamat datang pada mata kuliah OOP");
+  }
+}
+\end{lstlisting}
+
+Agar kode tersebut dapat berjalan, maka kita harus melakukan \textit{compile} terlebih dahulu pada kode sumber dengan cara berikut :
+
+\begin{lstlisting}
+$ javac Mahasiswa.java
+\end{lstlisting}
+
+Dari hasil \textit{compile} tersebut, akan terbentuk sebuah berkas dengan nama yang sama, yaitu \texttt{Mahasiswa} namun dengan ekstensi \texttt{.class}, bila sudah tersebut berkas ini, kita dapat menjalankannya dengan perintah berikut :
+
+\begin{lstlisting}
+$ java Mahasiswa
+\end{lstlisting}
+
+Hasil keluaran dari perintah tersebut seharusnya akan menampilkan teks seperti ini :
+
+\begin{lstlisting}
+Selamat datang pada mata kuliah OOP
+\end{lstlisting}
+
+\subsection{Objek}
+
+Dari contoh kode sebelumnya, deklarasi kelas \texttt{Mahasiswa} sudah memiliki sebuah fitur atau \textit{method} dengan nama \texttt{main}. Sekarang kita akan coba menambahkan ciri atau atribut lain pada kelas \texttt{Mahasiswa}. 
+
+Seorang Mahasiswa tentunya akan memiliki \textbf{nama} dan \textbf{NIM} (Nomor Induk Mahasiswa), untuk mengimplementasikan atribut ini, kita akan ubah kodenya menjadi seperti ini :
+
+\begin{lstlisting}{java}
+public class Mahasiswa {
+  
+  String nama;
+  String nim;
+  
+}
+\end{lstlisting}
+
+Kita hapus terlebih dahulu \textit{method} \texttt{main}, agar kita fokus pada kelas \texttt{Mahasiswa}. Kelas ini memiliki atribut \texttt{nama} dan \texttt{nim}, pada kelas ini akan kita tambahkan sebuah fitur atau \textit{method} untuk menampilkan informasi dari Mahasiswa yang bersangkutan, kodenya akan kita tambahkan sehingga terlihat seperti berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+  
+  String nama;
+  String nim;
+  
+  public void cetakInfo() {
+    System.out.println("Nama : " + nama);
+    System.out.println("NIM : " + nim);
+  }
+  
+}
+\end{lstlisting}
+
+Kelas \texttt{Mahasiswa} kita anggap sudah lengkap untuk sementara, kita akan coba membuat sebuah objek dari kelas \texttt{Mahasiswa} ini. Buatlah sebuah kelas baru, kita beri nama untuk berkasnya adalah \texttt{Aplikasi.java} yang isinya seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa ami = new Mahasiswa();
+    ami.nama = "tamami";
+    ami.nim = "19001";
+    ami.cetakInfo();
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada baris ke-3, bahwa objek \texttt{ami} telah kita buat dengan tipe data berupa kelas \texttt{Mahasiswa}, ini artinya, objek \texttt{ami} merupakan instan dari kelas \texttt{Mahasiswa}.
+
+Pembentukan objek, agar data di dalamnya dapat kita ubah, kita perlu melakukan inisiasi dengan pemanggilan konstruktor \texttt{Mahasiswa} dengan kode \texttt{new Mahasiswa()}. Konstruktor ini akan kita bahas di bagian lain, namun secara \textit{default}, setiap kelas pasti memiliki 1 (satu) konstruktor tanpa parameter walau tidak dideklarasikan secara eksplisit.
+
+Baris ke-4 dan baris ke-5 mengisikan nilai ke properti \texttt{nama} dan \texttt{nim} milik objek \texttt{ami}. Kemudian pada baris ke-6, \textit{method} \texttt{cetakInfo()} milik objek \texttt{ami} dipanggil.
+
+Untuk melakukan kompilasi, seperti langkah sebelumnya, kita dapat melakukannya dengan perintah \texttt{javac} dari konsol atau \textit{command prompt} seperti berikut :
+
+\begin{lstlisting}
+$ javac Aplikasi.java
+\end{lstlisting}
+
+Kemudian jalankan dengan perintah berikut :
+
+\begin{lstlisting}
+$ java Aplikasi
+\end{lstlisting}
+
+Hasil yang dikeluarkan seharusnya akan terlihat seperti berikut :
+
+\begin{lstlisting}
+Nama : Tamami
+NIM : 19001
+\end{lstlisting}
+
+\section{Kesimpulan}
+
+Bahwa kelas dan objek itu adalah dua hal yang berbeda, dimana kelas adalah deklarasi sebuah unit yang memiliki atribut dan fitur tertentu, sementara objek adalah instan dari suatu kelas.
+
+\section{Tugas}
+
+Buatlah sebuah kelas \texttt{Anggota}, yang di dalamnya terpada atribut \textbf{nomor anggota} dan \textbf{nama}. Kemudian buat sebuah objek yang merupakan instan dari kelas \texttt{Anggota} dan isikan \textit{nama} dan \textit{nomor anggota}nya. Kemudian cetak hasilnya dalam format \texttt{no. anggota : nama} seperti contoh berikut :
+
+\begin{lstlisting}
+19001 : tamami
+\end{lstlisting}
