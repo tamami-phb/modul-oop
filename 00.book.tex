@@ -1,0 +1,141 @@
+%%%%%%%%%%%%%%%%%%%% book.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample root file for the chapters of your "monograph"
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\documentclass[pdftex,13pt]{book}
+\documentclass[pdftex,12pt]{book}
+
+% choose options for [] as required from the list
+% in the Reference Guide, Sect. 2.2
+\usepackage[paperwidth=8.27in, paperheight=11.69in]{geometry}
+
+\usepackage{makeidx}         % allows index generation
+\usepackage{graphicx}        % standard LaTeX graphics tool
+                             % when including figure files
+%\graphicspath{ {resources/} }                             
+%\usepackage{multicol}        % used for the two-column index
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+\usepackage[bahasa]{babel}
+\usepackage{enumerate}
+\usepackage{paralist}
+\usepackage{float}
+\usepackage{gensymb}
+\renewcommand{\baselinestretch}{1.5}
+
+
+% -- start -- plugin hyperlink url
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks = true,
+	linkcolor = blue,
+	filecolor = magenta,
+	urlcolor = cyan
+}
+% -- end -- plugin hyperlink url
+
+% -- start -- plugin color
+\usepackage{color}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+% -- end -- plugin color
+
+% -- start -- plugin listing code
+\usepackage{listings}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+ 
+\lstset{style=mystyle}
+% -- end -- plugin listing code
+
+% etc.
+% see the list of further useful packages
+% in the Reference Guide, Sects. 2.3, 3.1-3.3
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\makeindex             % used for the subject index
+                       % please use the style svind.ist with
+                       % your makeindex program
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%\author{Priyanto Tamami}
+%\title{BUKU PETUNJUK OPERASIONAL SISTEM INFORMASI GEOGRAFIS UNTUK PBB-P2 DENGAN MAPINFO VERSI 8.0}
+%\date{22 Desember 2015}
+%\maketitle
+\sloppy
+
+\input{./00.title.tex}
+
+\tableofcontents
+
+% -- daftar isi
+
+
+%\input{./03.operator-variabel-tipe-data.tex}
+
+% -- pustaka
+
+\frontmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\include{dedic}
+%\include{pref}
+
+
+\mainmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{./01-kelas-objek.tex}
+\input{./02-konstruktor-field-overload.tex}
+%\input{./03.pdi-file.tex}
+%\input{./04.pdi-database.tex}
+%\input{./05.star-schema.tex}
+%\input{./06.classic-models.tex}
+%\input{./07.schema-workbench.tex}
+%\input{./08.bis.tex}
+%\input{./14.pustaka.tex}
+
+%\include{part}
+%\include{chapter}
+%\include{chapter}
+%\appendix
+%\include{appendix}
+
+\backmatter%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\include{solutions}
+%\include{referenc}
+\printindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+
+
+
+

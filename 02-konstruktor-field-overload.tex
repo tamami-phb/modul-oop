@@ -1,0 +1,158 @@
+\chapter{Konstruktor, Field, dan Overloading}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep Konstruktor, \textit{Field}, dan \textit{Overloading} pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Pada Bab sebelumnya, kita sempat menyinggung sedikit tentang konstruktor, bahwa setiap kelas yang kita deklarasikan, secara implisit akan menyediakan sebuah konstruktor tanpa parameter di dalamnya, konstruktor ini dipanggil pada saat akan membuat instan bagi sebuah objek.
+
+Namun demikian, konstruktor ini pun sebetulnya dapat kita deklarasikan yang biasanya digunakan untuk memberikan nilai-nilai \textit{default} bagi atribut / \textit{field} yang ada di dalamnya.
+
+Lalu apa itu \textit{field}? \textit{Field} atau atribut sebetulnya sudah sangat kita kenal dalam konsep paradigma pemrograman yang lain dengan nama \textit{variabel}. Biasanya pada sebuah kelas akan memiliki 1 (satu) atau lebih \textit{field} atau atribut, bersama dengan \textit{method} akan menjadi ciri sebuah kelas.
+
+Selain deklarasi konstruktor tanpa parameter, sebetulnya kita masih dapat mendeklarasikan konstruktor lain dengan parameter, dan dapat dideklarasikan lebih dari 1 (satu) konstruktor, implementasi ini disebut \textit{overloading}.
+
+Mari kita lihat implementasi dari ketiga istilah di atas dalam bahasa pemrograman Java.
+
+\section{Praktek}
+
+\subsection{Konstruktor}
+
+Konstruktor sebetulnya adalah fungsi atau \textit{method} yang dipanggil ketika akan membuat sebuah instan dari kelas. Ciri yang terlihat pada konstruktor ini dibanding \textit{method} lain adalah namanya akan sama persis dengan nama kelasnya, dan tidak memiliki nilai balik sama sekali.
+
+Mari kita lihat contoh kelas \textit{Mahasiswa} sebelumnya seperti berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+
+  String nama;
+  String nim;
+  
+  public Mahasiswa() {}
+  
+  public void cetakInfo() {
+    System.out.println("Nama : " + nama);
+    System.out.println("NIM : " + nim);
+  }
+
+}
+\end{lstlisting}
+
+Tampak pada kode tersebut, pada baris ke-6 adalah deklarasi konstruktor tanpa parameter yang apabila tidak dideklarasikan pun, konstruktor tersebut secara implisit sudah ada. Namun sekarang kita akan modifikasi konstruktor tersebut untuk mengisikan nilai \textit{default} ke atribut \texttt{nama} dan \texttt{nim}. Kodenya akan menjadi seperti berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+
+  String nama;
+  String nim;
+  
+  public Mahasiswa() {
+    nama = "tidak ada";
+    nim = "00000";
+  }
+  
+  public void cetakInfo() {
+    System.out.println("Nama : " + nama);
+    System.out.println("NIM : " + nim);
+  }
+
+}
+\end{lstlisting}
+
+Kita akan melihat perubahan pada baris ke-6 sampai ke-9, konstruktor yang tadinya kosong, tanpa deklarasi isi sama sekali, sekarang kita memberikan nilai \textit{default} pada atribut \texttt{nama} dan \texttt{nim}.
+
+Sekarang kita coba modifikasi kelas \texttt{Aplikasi} dari Bab sebelumnya untuk melihat hasilnya, bagaimana bila instan yang terbentuk tidak kita isikan atribut-atributnya. Berikut kodenya :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa ami = new Mahasiswa();
+    ami.cetakInfo();
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada baris ke-3 dan ke-4, objek \texttt{ami} hanya membentuk instan baru dengan memanggil konstruktor \texttt{Mahasiswa} tanpa parameter, kemudian \textit{method} \texttt{cetakInfo()} langsung dipanggil. 
+
+Untuk melihat hasil keluarannya, pastikan untuk melakukan \textit{compile} terhadap kelas \texttt{Mahasiswa} dan \texttt{Aplikasi}. Hasil yang didapat pada layar monitor seharusnya akan terlihat seperti berikut :
+
+\begin{lstlisting}
+Nama : tidak ada
+NIM : 00000
+\end{lstlisting}
+
+Hal ini disebabkan karena pada saat kita membentuk instan baru dengan memanggil konstruktor \texttt{Mahasiswa} tanpa parameter, nilai atribut \texttt{nama} dan \texttt{nim} sudah terisi secara otomatis dengan nilai \textit{default}, sehingga apabila tidak ada perubahan, maka hasil yang ditampilkan adalah hasil dari pengisian nilai \textit{default} pada konstruktornya.
+
+\subsection{Field}
+
+Seperti dijelaskan pada bagian sebelumnya bahwa istilah \textit{field} ini lebih kita kenal dengan istilah \textit{variabel} atau dalam istilah yang sering disebut dalam beberapa sumber adalah atribut.
+
+Sehingga pada kelas \texttt{Mahasiswa}, atribut atau \textit{field} yang dimiliki adalah \texttt{nama} dan \texttt{nim}.
+
+Namun hendaknya, sesuai aturan pada desain orientasi objek bahwa akses terhadap \textit{field} ini seharusnya terbatas hanya pada kelas yang bersangkutan, apabila objek lain ingin melakukan akses atau manipulasi data, maka harus dilakukan melalui \textit{method} yang dapat diakses oleh publik.
+
+Jadi idealnya, bentuk kode dari kelas \texttt{Mahasiswa} akan menjadi seperti berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+
+  private String nama;
+  private String nim;
+  
+  public Mahasiswa() {
+    nama = "tidak ada";
+    nim = "00000";
+  }
+  
+  public void cetakInfo() {
+    System.out.println("Nama : " + nama);
+    System.out.println("NIM : " + nim);
+  }
+  
+  public void setNama(String nama) {
+    this.nama = nama;
+  }
+  
+  public String getNama() {
+    return nama;
+  }
+  
+  public void setNim(String nim) {
+    this.nim = nim;
+  }
+  
+  public String getNim() {
+    return nim;
+  }
+
+}
+\end{lstlisting}
+
+Terlihat sedikit lebih panjang, namun dari baris ke-16 sampai ke bawah sebetulnya adalah deklarasi aksesor untuk \textit{field} atau atribut \texttt{nama} dan \texttt{nim} yang menjadi \texttt{private} pada baris ke-3 dan ke-4.
+
+Dengan kondisi demikian, diharapkan nilai atribut yang berada di dalam kelas lebih dapat dikontrol, dan pengguna berikutnya tidak perlu terlalu pusing memikirkan detail kelasnya, cukup fokus dengan apa fungsinya.
+
+Dengan kondisi ini pula, maka akses terhadap atribut \texttt{nama} dan \texttt{nim} dari kelas \texttt{Aplikasi} tidak bisa dilakukan dengan cara yang lama, perubahan pada kelas \texttt{Aplikasi} menjadi seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa ami = new Mahasiswa();
+    ami.setNama("Tamami");
+    ami.setNim("19001");
+    ami.cetakInfo();
+  }
+}
+\end{lstlisting}
+
+Perhatikan cara akses terhadap atribut \texttt{nama} dan \texttt{nim} yang dilakukan pada baris ke-4 dan ke-5. Semuanya menggunakan \textit{method} yang telah disediakan untuk melakukan akses terhadap atribut kelas.
+
+Aturan ini berlaku secara umum di Java, dan sebaiknya diikuti, karena banyak \textit{framework} yang dibangun menggunakan standar seperti ini, sehingga kedepannya, saat kita terbiasa dengan skema seperti ini, untuk melakukan integrasi dengan menggunakan \textit{framework} di Java lebih mudah dan dapat dikerjakan dengan hasil yang benar.
+
+\subsection{Overloading}
+
+\section{Kesimpulan}
+
+\section{Tugas}
