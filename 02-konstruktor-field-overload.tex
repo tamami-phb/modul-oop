@@ -153,6 +153,79 @@ Aturan ini berlaku secara umum di Java, dan sebaiknya diikuti, karena banyak \te
 
 \subsection{Overloading}
 
+Seperti dijelaskan sebelumnya, bahwa deklarasi konstruktor tidak terbatas pada sebuah deklarasi konstruktor saja, namun bisa lebih dari satu, konsep inilah yang dinamakan \textit{overloading}, yaitu dimana sebuah \textit{method} (karena konstruktor sebetulnya adalah sebuah \textit{method}) yang dideklarasikan dengan nama yang sama, namun dengan beberapa perbedaan parameter.
+
+Contoh kodenya pada kelas Mahasiswa adalah seperti berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+
+  private String nama;
+  private String nim;
+  
+  public Mahasiswa() {
+    nama = "tidak ada";
+    nim = "00000";
+  }
+  
+  public Mahasiswa(String nama, String nim) {
+    this.nim = nim;
+    this.nama = nama;
+  }
+  
+  public void cetakInfo() {
+    System.out.println("Nama : " + nama);
+    System.out.println("NIM : " + nim);
+  }
+  
+  public void setNama(String nama) {
+    this.nama = nama;
+  }
+  
+  public String getNama() {
+    return nama;
+  }
+  
+  public void setNim(String nim) {
+    this.nim = nim;
+  }
+  
+  public String getNim() {
+    return nim;
+  }
+
+}
+\end{lstlisting}
+
+Perhatikan blok baris ke-11 sampai baris ke-14, ini adalah contoh \textit{overload} konstruktor untuk kelas \texttt{Mahasiswa}, dengan adanya deklarasi ini, maka akan kita coba manfaatkan pada kelas \texttt{Aplikasi} sehingga pembentukan instan kelas \texttt{Mahasiswa} jadi lebih ringkas. Berikut adalah contoh perubahan yang terjadi pada kelas \texttt{Aplikasi} :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa ami = new Mahasiswa("tamami", "19001");
+    Mahasiswa diva = new Mahasiswa("Diva", "19002");
+    
+    ami.cetakInfo();
+    System.out.println();
+    diva.cetakInfo();
+  }
+}
+\end{lstlisting}
+
+Silahkan lakukan \textit{compile} ulang kemudian jalankan aplikasinya.
+
 \section{Kesimpulan}
 
+Bahwa secara implisit, konstruktor tanpa parameter akan terbentuk pada saat kita mendeklarasikan sebuah kelas, selain itu kita pun dapat membentuk lebih dari 1 (satu) konstruktor dengan perbedaan jumlah parameter yang kita sebut dengan \textit{override}.
+
+Implementasi yang dilakukan pada \textit{field} atau atribut di dalam kelas adalah menjadikan aksesnya tertutup secara langsung untuk penggunaan dari luar kelas yang bersangkutan.
+
 \section{Tugas}
+
+Dari tugas pada Bab 1, kali ini kita modifikasi dengan mengubah konstruktor tanpa parameter untuk memberikan nilai \textit{default} terhadap atribut \textit{nama} dan \textit{nomor anggota}.
+
+Kemudian buat sebuah konstruktor lagi dengan parameter berupa \textit{nama} dan \textit{nomor anggota}. 
+
+Setelah kelas \texttt{Anggota} terbentuk, buat dua buah objek kemudian manfaatkan konstruktor dengan parameter untuk membentuk instan kelas bagi kedua objek tersebut.
+
+Tampilkan isi informasi objeknya ke layar.
