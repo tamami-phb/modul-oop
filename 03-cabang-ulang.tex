@@ -280,16 +280,41 @@ Contoh implementasi kodenya adalah seperti berikut :
 \begin{lstlisting}
 public class Aplikasi {
   public static void main(String args[]) {
-    int a = 1;
-    while(a < 6) {
-      System.out.println(a++);
+    int angka;
+    Scanner sc = new Scanner(System.in);
+
+    System.out.print("Masukkan angka : ");
+    angka = sc.nextInt();
+    int i=0;
+    while(i < angka) {
+      System.out.println("datanya : " + i++);
     }
   }
 }
 \end{lstlisting}
 
-Pada baris ke-3, kita perlu melakukan inisiasi variabel sebagai bahan pemeriksaan logika pada saat akan melakukan iterasi, kemudian pada baris ke-4, nilai variabel ini akan diperiksa, apakah nilainya kurang dari \texttt{6}, bila hasilnya bernilai \texttt{true}, maka cetak isi dari variabel \texttt{a} kemudian tambahkan nilainya dengan \texttt{1}. Kemudian melanjutkan siklus iterasinya sampai nilai pada variabel \texttt{a} bernilai \texttt{6}.
+Kali ini kita memanfaatkan kelas \texttt{Scanner} untuk menerima masukkan dari pengguna, pada baris ke-4, kita siapkan instan dari kelas \texttt{Scanner} dengan sumber data dari input pengguna, dalam hal ini papan ketik.
+
+Pada baris ke-6, kita memberikan informasi ke pengguna untuk memasukkan sebuah angka, yang kemudian pada baris ke-7 kita simpan angka yang telah dimasukkan oleh pengguna ke variabel \texttt{angka}.
+
+Pada baris ke-8, kita buat variabel \texttt{i} dan kita isikan nilai awalnya adalah \texttt{0} (nol), pada blok baris ke-9 sampai ke-11, kita mulai melakukan pencetakan isi dari variabel \texttt{i} sampai nilainya sama dengan \texttt{angka} yang telah dimasukkan oleh pengguna.
 
 \section{Kesimpulan}
 
+Bahwa percabangan digunakan apabila kita ingin melakukan seleksi terhadap sebuah nilai, yang kemudian menentukan alur logika aplikasi yang dikerjakan. Sedangkan perulangan dapat kita gunakan apabila kita membutuhkan sebuah kode yang dijalankan berulang untuk beberapa siklus tertentu.
+
 \section{Tugas}
+
+Buatlah sebuah aplikasi sederhana, yang terdiri dari 3 (tiga) menu, judul menunya adalah seperti berikut :
+
+\begin{enumerate}
+  \item Tambah
+  \item Kurang
+  \item Keluar
+\end{enumerate}
+
+Menu ini akan terus berulang, sampai pengguna memilih atau memasukkan angka 3 (tiga). 
+
+Bila pengguna memilih angka 1 (satu) maka variabel yang telah disiapkan akan ditambahkan dengan 1 (satu) kemudian ditampilkan di layar, lalu menampilkan menu ini kembali.
+
+Bila pengguna memilih angka 2 (dua), variabel yang telah disiapkan akan dikurangi dengan 1 (satu) kemudian ditampilkan di layar dan kembali memunculkan menu tersebut.
