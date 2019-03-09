@@ -1,1 +1,295 @@
 \chapter{Struktur Percabangan dan Perulangan}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep Percabangan dan Perulangan serta implementasinya pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Kondisi percabangan adalah kondisi dimana alur dari logika program memiliki dua atau lebih pilihan yang harus dijalankan, msaing-masing pilihan akan mengakibatkan hasil yang berbeda. Istilah lain yang biasa disebut untuk mengungkapkan ini adalah seleksi.
+
+Sedangkan kondisi perulangan adalah kondisi dimana suatu alur program perlu melakukan beberapa pekerjaan yang berulang untuk beberapa siklus tertentu.
+
+Implementasi untuk kedua konsep tersebut mampu dilakukan dalam bahasa pemrograman apapun, namun kita akan mencoba mengimplementasikannya di bahasa pemrograman Java.
+
+\section{Praktek}
+
+\subsection{Percabangan}
+
+Percabangan di Java dapat dideklarasikan melalui beberapa cara, mari kita bahas macamnya satu satu.
+
+\subsubsection{Operator \textit{Ternary}}
+
+Apabila kita memiliki kasus cabang yang sederhana, yang hasilnya dapat langsung dikembalikan dan disimpan dalam sebuah variabel, kita dapat menggunakan operator \textit{ternary}. Format yang digunakan untuk dekalrasi operator \textit{ternary} ini adalah seperti berikut :
+
+\begin{lstlisting}
+(a) ? b : c
+\end{lstlisting}
+
+Keterangan dari kode tersebut adalah seperti berikut :
+
+\begin{tabular}{| l | l |}
+\hline
+Huruf & Keterangan \\
+\hline
+a & seleksi yang hasilnya dapat bernilai \texttt{true} atau \texttt{false} \\
+\hline
+b & nilai yang dikembalikan apabila pernyataan pada huruf \textbf{a} \\
+& bernilai \texttt{true} atau benar \\
+\hline
+c & nilai yang dikembalikan apabila pernyataan pada huruf \textbf{a} \\
+& bernilai \texttt{false} atau salah \\
+\hline
+\end{tabular}
+
+Perhatikan contoh kode berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int a = 10;
+    int b = 13;
+    
+    String result = (a % 2 == 0) ? "bilangan genap" : "bilangan ganjil";
+    System.out.println(a + " adalah " + result);
+
+    result = (b % 2 == 0) ? "bilangan genap" : "bilangan ganjil";
+    System.out.println(b + " adalah " + result);
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada baris ke-6 dan ke-9, pada baris ini kita menggunakan operator \textit{ternary} untuk melakukan seleksi sederhana apakah sebuah bilangan seperti \texttt{10} atau \texttt{13} pada variabel \texttt{a} dan \texttt{b} merupakan bilangan genap atau bilangan ganjil.
+
+Dengan operator \textit{ternary} kita tidak perlu menggunakan perintah \texttt{if} yang begitu panjang, cukup deklarasikan dalam satu baris kode, dengan cara mencari hasil sisa bagi dengan 2 (dua), apabila nilainya adalah 0 (nol), maka akan mengembalikan teks "bilangan genap", namun bila hasilnya tidak 0 (nol) maka akan mengembalikan teks "bilangan ganjil".
+
+\subsubsection{Blok Perintah \texttt{if}}
+
+Blok perintah \texttt{if} ini akan melakukan percabangan atau melakukan perintah yang berada dalam bloknya apabila pernyataan yang diberikan bernilai \texttt{true} atau benar.
+
+Contoh kodenya adalah seperti berikut :
+
+\begin{lstlisting}
+if(a) b;
+\end{lstlisting}
+
+Bila pernyataan pada bagian \texttt{a} bernilai \texttt{true}, maka pernyataan pada bagian \texttt{b} akan dijalankan, namun bila bernilai \texttt{false} maka pernyataan pada bagian \texttt{b} akan dilewati.
+
+Bentuk lain dari perintah \texttt{if} apabila kita membutuhkan lebih banyak baris kode yang dieksekusi pada bagian \texttt{b} apabila pernyataan pada bagian \texttt{a} bernilai \texttt{true} adalah seperti berikut :
+
+\begin{lstlisting}
+if(a) {
+  b;
+  c;
+}
+\end{lstlisting}
+
+Sehingga apabila pernyataan pada bagian \texttt{a} bernilai \texttt{true}, maka pernyataan di dalam kurung kurawal (yaitu pada bagian \texttt{b} dan \texttt{c}) dapat dijalankan.
+
+Contoh implementasi kodenya adalah seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int a = 10;
+    if(a % 2 == 0) {
+      System.out.println(a + " adalah bilangan genap");
+      System.out.println("ini masih dari dalam struktur if");
+    }
+    System.out.println("akhir aplikasi");
+  }
+}
+\end{lstlisting}
+
+Perhatikan bahwa kode pada baris ke-5 dan ke-6 akan tercetak bila program dijalankan, namun bila nilai pada variabel \texttt{a} kita ubah menjadi bilangan ganjil, maka kedua baris tersebut akan dilewati, karena pernyataan pada parameter \texttt{if} tidak mengembalikan nilai \texttt{true}.
+
+\subsubsection{Blok Perintah \texttt{if...else}}
+
+Dengan menggunakan perintah \texttt{if}, maka apabila parameter yang diberikan bernilai \texttt{false}, maka aplikasi akan melewati begitu saja. Bagaimana bila nilai pada parameter \texttt{if} bernilai \texttt{false} namun kita tetap akan menangani hasilnya? 
+
+Solusi dari permasalahan tersebut ada pada blok perintah berikut :
+
+\begin{lstlisting}
+if(a) b;
+else c;
+\end{lstlisting}
+
+Seperti pada bahasan sebelumnya, bahwa bila bagian \texttt{a} bernilai \texttt{true} maka pernyataan pada bagian \texttt{b} akan dijalankan, namun bila hasil pada bagian \texttt{a} bernilai \texttt{false}, maka yang dijalankan adalah pernyataan pada bagian \texttt{c}.
+
+Format lain apabila kita memerlukan lebih dari 1 (satu) baris perintah pada bagian \texttt{b} dan \texttt{c}, cukup berikan kurung kurawal untuk memberikan tanda blok yang dikerjakan, formatnya menjadi seperti berikut :
+
+\begin{lstlisting}
+if(a) {
+  b;
+  c;
+} else {
+  d;
+  e;
+}
+\end{lstlisting}
+
+Namun pada contoh tersebut, apabila nilai pada bagian \texttt{a} bernilai \texttt{true} maka yang dikerjakan adalah pernyataan pada blok pertama, yaitu bagian \texttt{b} dan \texttt{c}, namun bila bernilai \texttt{false} maka yang dikerjakan adalah bagian \texttt{d} dan \texttt{e}.
+
+Contoh implementasinya adalah seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int a = 13;
+    
+    if(a % 2 == 0) {
+      System.out.println(a + " adalah bilangan genap");
+    } else {
+      System.out.println(a + " adalah bilangan ganjil");
+    }
+    System.out.println("akhir aplikasi");
+  }
+}
+\end{lstlisting}
+
+Tentu saja hasil dari baris program di atas adalah tercetaknya \texttt{a} dengan keterangan \texttt{adalah bilangan ganjil}.
+
+Selain bentuk sederhana seperti itu, perintah \texttt{if} dan \texttt{if...else...} pun sebetulnya bisa dibuat bertingkat, sehingga dapat melakukan percabangan atau seleksi beberapa kondisi dalam satu alur.
+
+\subsubsection{Blok perintah \texttt{switch...case}}
+
+Perintah \texttt{switch...case} ini digunakan apabila kita memiliki beberapa alternatif pilihan selain dalam bentuk \texttt{true} dan \texttt{false}. 
+
+Struktur perintah ini adalah seperti berikut :
+
+\begin{lstlisting}
+switch(a) {
+  case b:
+    c;
+    break;
+  case d:
+    e;
+    break;
+  default:
+    f;
+}
+\end{lstlisting}
+
+Dari kode di atas, yang akan dilakukan seleksi hasil adalah pada bagian \texttt{a}, apabila hasil pemeriksaan seleksi pada bagian \texttt{a} menghasilkan nilai \texttt{b}, maka yang akan dieksekusi adalah bagian \texttt{c}, sedangkan apabila hasil seleksi \texttt{a} merupakan nilai \texttt{d}, maka yang akan dijalankan adalah pada bagian \texttt{e}, terakhir apabila tidak ada satu nilai pun yang cocok, maka akan dijalankan blok kode yang berada pada bagian \texttt{f}.
+
+Pilihan blok baris \texttt{default} sebetulnya adalah pilihan, boleh disertakan, atau tidak disertakan pun tidak apa-apa. Kemudian pemberian perintah \texttt{break} pada tiap akhir \texttt{case} adalah karena apabila sebuah blok \texttt{case} dijalankan, maka setelah baris akhir dari \texttt{case} tersebut tidak ada \texttt{break}, maka akan dilanjutkan ke \texttt{case} berikutnya.
+
+Contoh implementasinya adalah seperti kode berikut ini :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int pilihan = 2;
+    
+    switch(pilihan) {
+      case 1:
+        System.out.println("Anda memilih angka 1");
+        break;
+      case 2:
+        System.out.println("Anda memilih angka 2");
+        break;
+      case 3:
+        System.out.println("Anda memilih angka 3");
+        break;
+      default:
+        System.out.println("Tidak ada pilihan");
+    }
+  }
+}
+\end{lstlisting}
+
+Dari contoh diatas, isi variabel \texttt{pilihan} sudah kita tentukan terlebih dahulu, yaitu \texttt{2}, sehingga hasil keluarannya dapat kita tebak, yaitu menjalankan perintah pada baris ke-10.
+
+Cobalah ganti isi variabel \texttt{pilihan} dengan angka lain, kemudian jalankan programnya.
+
+\subsection{Perulangan}
+
+Struktur perulangan pun dalam bahasa pemrograman Java memiliki beberapa macam bentuk, mari kita bahas apa saja bentuknya.
+
+\subsubsection{Blok perintah \texttt{for}}
+
+Struktur \texttt{for} ini membutuhkan 3 (tiga) parameter, formatnya adalah seperti berikut :
+
+\begin{lstlisting}
+for(a; b; c) {
+  d;
+}
+\end{lstlisting}
+
+Pada bagian \texttt{a} akan berisi inisialisasi nilai yang akan dilakukan iterasi atau perulangan, pada bagian \texttt{b} merupakan pemeriksaan logika apakah iterasi akan dilanjutkan atau tidak, bila bernilai \texttt{true} maka akan dilanjutkan, bila \texttt{false} maka iterasi akan dihentikan.
+
+Pada bagian \texttt{c} akan berisi \textit{counter} yang akan dikerjakan di tiap akhir siklus masing-masing iterasi, sedangkan pada bagian \texttt{d} adalah kondisi atau pernyataan yang akan dijalankan di tiap siklus iterasi.
+
+Contoh implementasi kodenya adalah seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    for(int i=1; i<=5; i++) {
+      System.out.println("data ke-" + i);
+    }
+  }
+}
+\end{lstlisting}
+
+Pada kode di atas, kita melakukan inisiasi variabel \texttt{i} yang bertipe data \textit{integer} dengan nilai \texttt{1}, kemudian prosesnya akan melakukan pemeriksaan logika dengan pernyataan \texttt{i<=5}, bila hasilnya bernilai \texttt{true} maka proses berlanjut dengan menjalankan blok perintah yang ada di dalam kurung kurawal, bila \texttt{false} maka perintah yang berada di dalam kurung kurawal akan dilewati.
+
+Setiap 1 (satu) siklus pengerjaan iterasi, maka perintah \texttt{i++} akan dijalankan diakhir siklus, kemudian kembali lagi ke pemeriksaan logika apakah hasilnya masih bernilai \texttt{true} atau \texttt{false}.
+
+\subsubsection{Blok perintah \texttt{do...while}}
+
+Blok perintah ini akan menjalankan minimal satu siklus iterasi, karena pemeriksaan logika untuk meneruskan atau menyudahi proses iterasi berikutnya berada di akhir siklus iterasi. Formatnya adalah seperti berikut :
+
+\begin{lstlisting}
+do {
+  a;
+} while(b);
+\end{lstlisting}
+
+Blok baris \texttt{a} adalah yang dikerjakan dalam sebuah siklus iterasi, dan pada bagian \texttt{b} adalah pemeriksa logika yang apabila bernilai \texttt{true}, maka siklus iterasi berikutnya dikerjakan, namun bila isinya bernilai \texttt{false} maka iterasi selesai.
+
+Contoh implementasi di Java untuk jenis iterasi ini adalah seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int i = 1;
+    do {
+      System.out.println(i++);
+    } while(i < 6);
+  }
+}
+\end{lstlisting}
+
+Kode di atas, pada baris ke-3 akan melakukan inisiasi nilai pada variabel \texttt{i} dengan angka \texttt{1}, kemudian siklus awal iterasi akan dikerjakan seperti pada baris ke-5, yaitu mencetak isi dari variabel \texttt{i}, kemudian ada tanda \texttt{++} yang artinya setelah perintah pada baris ini dikerjakan, variabel \texttt{i} akan dijumlahkan dengan 1 (\textit{increment}), setelah itu akan melakukan siklus iterasi berikutnya sampai nilai pada variabel \texttt{i} bernilai \texttt{6} yang artinya sudah tidak memenuhi persamaan pada baris ke-6, dengan kata lain bernilai \texttt{false}.
+
+\subsubsection{Blok perintah \texttt{while...}}
+
+Sama seperti bentuk iterasi sebelumnya, yaitu \texttt{do...while}, namun kali ini pemeriksaan logika yang menentukan apakah iterasi dikerjakan atau tidak ada di awal siklus iterasi. Bentuk blok perintahnya adalah seperti berikut :
+
+\begin{lstlisting}
+while(a) {
+  b;
+}
+\end{lstlisting}
+
+Pada bentuk di atas, pada bagian \texttt{a} akan diperiksa terlebih dahulu hasil operasi logikanya, bila bernilai \texttt{true}, maka perintah yang ada pada bagian \texttt{b} akan dikerjakan, namun bila bernilai \texttt{false} iterasi akan dilewatkan.
+
+Contoh implementasi kodenya adalah seperti berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int a = 1;
+    while(a < 6) {
+      System.out.println(a++);
+    }
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-3, kita perlu melakukan inisiasi variabel sebagai bahan pemeriksaan logika pada saat akan melakukan iterasi, kemudian pada baris ke-4, nilai variabel ini akan diperiksa, apakah nilainya kurang dari \texttt{6}, bila hasilnya bernilai \texttt{true}, maka cetak isi dari variabel \texttt{a} kemudian tambahkan nilainya dengan \texttt{1}. Kemudian melanjutkan siklus iterasinya sampai nilai pada variabel \texttt{a} bernilai \texttt{6}.
+
+\section{Kesimpulan}
+
+\section{Tugas}
