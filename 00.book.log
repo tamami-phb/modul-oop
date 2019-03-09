@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.19)  9 MAR 2019 21:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.19)  9 MAR 2019 22:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -481,7 +481,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 Bab 4.
 [29
 
-] [30]) [31] [32
+] [30] [31]) (./05.inherit-encap-polimorf.tex [32]
+Bab 5.
+[33
+
+] [34] [35] [36]) [37] [38
 
 ]
 No file 00.book.ind.
@@ -491,14 +495,14 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 136.
 Package rerunfilecheck Info: File `00.book.out' has not changed.
-(rerunfilecheck)             Checksum: 4751BB987C79F555ECEA3A4D3F74819D;1749.
+(rerunfilecheck)             Checksum: 97FF9D6D0A05EF0154C01DB61E975FE7;2299.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
- 8440 strings out of 492649
- 122286 string characters out of 6129622
+ 8527 strings out of 492649
+ 123590 string characters out of 6129622
  273076 words of memory out of 5000000
- 11792 multiletter control sequences out of 15000+600000
+ 11801 multiletter control sequences out of 15000+600000
  9727 words of font info for 34 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  28i,6n,32p,654b,1790s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -512,10 +516,10 @@ local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/l
 ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/loc
 al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on 00.book.pdf (36 pages, 186666 bytes).
+Output written on 00.book.pdf (42 pages, 200589 bytes).
 PDF statistics:
- 805 PDF objects out of 1000 (max. 8388607)
- 749 compressed objects within 8 object streams
- 426 named destinations out of 1000 (max. 500000)
- 249 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 954 PDF objects out of 1000 (max. 8388607)
+ 891 compressed objects within 9 object streams
+ 501 named destinations out of 1000 (max. 500000)
+ 321 words of extra memory for PDF output out of 10000 (max. 10000000)
 

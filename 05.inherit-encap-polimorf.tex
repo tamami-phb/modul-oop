@@ -1,0 +1,111 @@
+\chapter{Inheritance, Encapsulation, dan Polimorphism}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep \textit{inheritance} (pewarisan), \textit{Encapsulation}, dan \textit{Polimorphism}, serta bagaimana implementasi ketiga konsep tersebut pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Konsep \textit{inheritance} ini sering muncul dalam pembahasan sebuah paradigma pemrograman berorientasi objek, yaitu bagaimana sebuah kelas akan mewarisi atribut dan \textit{method} milik kelas di atasnya, yang kemudian hanya tinggal menambahkan perilaku unik yang lebih detail daripada kelas yang mewarisi.
+
+Dengan kata lain, kelas yang mewarisi, akan memiliki seluruh atribut dan \textit{method} yang dideklarasikan pada kelas di atasnya.
+
+Konsep \textit{Encapsulation} adalah aturan pada paradigma pemrograman berorientasi objek bahwa seluruh informasi detail dalam kelas perlu disembunyikan, satu-satunya cara untuk melakukan akses terhadap informasi ini dilakukan melalui \textit{interface} yang kita kenal dengan istilah \textit{method} atau fungsi, atau prosedur.
+
+Sedangkan pengertian dari Polimorphism adalah pada kelas yang mewarisi atribut dan \textit{method} dari kelas di atasnya, dapat memiliki implementasi mandiri yang berbeda dari kelas diatasnya, atau bahkan dari kelas lain yang mewarisi dari kelas yang sama.
+
+Kita perjelas saja ketiga konsep tersebut di atas pada bagian praktek.
+
+\section{Praktek}
+
+\subsection{Inheritance}
+
+Implementasi untuk \textit{inheritance} atau pewarisan ini, misalkan kita memiliki sebuah kelas dengan nama \texttt{Personal} yang nantinya sebagai pewaris terhadap kelas \texttt{Mahasiswa} dan \texttt{Dosen}. 
+
+Deklarasi untuk kelas \texttt{Personal} ini kita simpan dalam paket \texttt{entitas}, berikut adalah isi kode dari kelas \texttt{Personal} :
+
+\begin{lstlisting}
+package entitas;
+
+public class Personal {
+
+  private String nik;
+  private String nama;
+  
+  public Personal() {
+    nik = "3376000";
+    nama = "tidak ada";
+  }
+  
+  public Personal(String nik, String nama) {
+    this.nik = nik;
+    this.nama = nama;
+  }
+  
+  public void cetak() {
+    System.out.println(nik + " : " + nama);
+  }
+  
+  // getter and setter
+  // .... 
+
+}
+\end{lstlisting}
+
+Kelas \texttt{Personal} ini memiliki 2 (dua) properti atau atribut dengan nama \texttt{nik} dan \texttt{nama}, memiliki 2 (dua) konstruktor, dan 5 (lima) buah \textit{method}, yang 1 (satu) terlihat (yaitu \textit{method} \texttt{cetak}), dan yang lain adalah \textit{method} aksesor yang sengaja tidak disertakan karena terlalu makan banyak tempat.
+
+Selanjutnya kita deklarasikan kelas \texttt{Mahasiswa} pada paket yang sama, yaitu paket \texttt{entitas}. Isi atau deklarasi kelasnya adalah seperti berikut :
+
+\begin{lstlisting}
+package entitas;
+
+public class Mahasiswa extends Personal {
+  
+  private String nim;
+  
+  public Mahasiswa(String nim) {
+    super();
+    this.nim = nim;
+  }
+  
+  public Mahasiswa(String nim, String nik, String nama) {
+    super(nik, nama);
+    this.nim = nim;
+  }
+  
+}
+\end{lstlisting}
+
+Pada saat kita deklarasikan kelas \texttt{Mahasiswa} pada baris ke-3, kita melihat ada perintah baru, yaitu \texttt{extends}, perintah inilah yang digunakan untuk menunjukkan bahwa kelas \texttt{Mahasiswa} akan mewarisi atribut dan \textit{method} milik kelas \texttt{Personal}.
+
+Kemudian pada konstruktor \texttt{Mahasiswa} kita melihat ada perintah \texttt{super()} yang artinya sebetulnya adalah memanggil konstruktor tanpa parameter dari kelas \texttt{Personal}, yang tentunya secara otomatis seluruh deklarasi atribut dan \textit{method} akan ditempelkan pada kelas \texttt{Mahasiswa} ini.
+
+Sekarang kita perhatikan kondisi kelas \texttt{Aplikasi} yang nantinya akan membentuk objek dari kelas \texttt{Mahasiswa} ini, kelas \texttt{Aplikasi} akan dideklarasikan di luar paket \texttt{entitas}, deklarasinya adalah seperti berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa[] mhs = {
+      new Mahasiswa("3376001", "19001", "tamami"),
+      new Mahasiswa("3376002", "19002", "diva"),
+      new Mahasiswa("3376003", "19003", "nabila")
+    };
+
+    for(Mahasiswa mahasiswa : mhs) {
+      mahasiswa.cetak();
+    }
+  }
+}
+\end{lstlisting}
+
+Perhatikan bahwa pada baris ke-12, ada pemanggilan \textit{method} \texttt{cetak}, padahal pada deklarasi milik kelas \texttt{Mahasiswa}, \textit{method} tersebut sama sekali tidak ada. Hal ini karena kelas \texttt{Mahasiswa} sebetulnya mewarisi seluruh atribut dan \textit{method} dari kelas \texttt{Personal}.
+
+\subsection{Encapsulation}
+
+\subsection{Polimorphism}
+
+\section{Kesimpulan}
+
+\section{Tugas}
