@@ -42,9 +42,35 @@ perhatikan deklarasi paket pada baris ke-1, penamaan paket ini mengikuti penamaa
 
 Kelas tersebut hanya mendefinisikan 2 (dua) properti atau atribut \texttt{nim} dan \texttt{nama}, kemudian pada konstruktornya langsung ditetapkan 2 (dua) parameter untuk mengisi atribut itu, terakhir kita berikan \textit{method} \texttt{cetak} untuk melakukan pencetakan isi dari atribut \texttt{nim} dan \texttt{nama} ke layar.
 
-Selanjutnya, di luar kandar \texttt{data}, sejajar dengan kandar ini kita buat kelas \texttt{Aplikasi}.
+Selanjutnya, di luar kandar \texttt{data}, sejajar dengan kandar ini kita buat kelas \texttt{Aplikasi}. Isi dari berkas \texttt{Aplikasi.java} ini adalah seperti berikut :
+
+\begin{lstlisting}
+import data.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa[] mhs = {
+      new Mahasiswa("19001", "tamami"),
+      new Mahasiswa("19002", "diva"),
+      new Mahasiswa("19003", "nabila")
+    };
+
+    for(Mahasiswa mahasiswa : mhs) {
+      mahasiswa.cetak();
+    }
+  }
+}
+\end{lstlisting}
+
+Perhatikan baris pertamanya yang menggunakan perintah \texttt{import} untuk menyertakan kelas \texttt{Mahasiswa} pada kelas \texttt{Aplikasi}, apabila kelas \texttt{Mahasiswa} berada dalam satu kandar yang sama dengan kelas \texttt{Aplikasi}, penggunaan perintah \texttt{import} ini tidak perlu, berhubung letak kelas \texttt{Mahasiswa} berada dalam paket (kandar) \texttt{data}, maka kita perlu mendeklarasikan dengan perintah \texttt{import}.
+
+\textit{Compile} dan jalankan kode di atas sehingga hasil yang kita dapat seharusnya akan menampilkan 3 (tiga) data mahasiswa yang telah kita definisikan pada larik \texttt{mhs}.
 
 \section{Kesimpulan}
+
+Bahwa penggunaan paket dibutuhkan agar tidak ada definisi kelas yang konflik pada saat implementasi. 
+
+Deklarasi penamaan paket di bahasa pemrograman Java akan mengikuti struktur pada \textit{file system}, sehingga perlu diperhatikan penamaan kandar pada \textit{file system} yang digunakan.
 
 \section{Tugas}
 
