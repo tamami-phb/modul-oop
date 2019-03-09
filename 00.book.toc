@@ -31,3 +31,9 @@
 \contentsline {subsubsection}{Blok perintah \texttt {while...}}{26}{section*.8}
 \contentsline {section}{\numberline {3.4}Kesimpulan}{27}{section.3.4}
 \contentsline {section}{\numberline {3.5}Tugas}{27}{section.3.5}
+\contentsline {chapter}{\numberline {4}Paket}{29}{chapter.4}
+\contentsline {section}{\numberline {4.1}Tujuan}{29}{section.4.1}
+\contentsline {section}{\numberline {4.2}Pengantar}{29}{section.4.2}
+\contentsline {section}{\numberline {4.3}Praktek}{30}{section.4.3}
+\contentsline {section}{\numberline {4.4}Kesimpulan}{31}{section.4.4}
+\contentsline {section}{\numberline {4.5}Tugas}{31}{section.4.5}

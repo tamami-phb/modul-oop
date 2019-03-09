@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.19)  9 MAR 2019 15:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.5.19)  9 MAR 2019 16:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -477,7 +477,17 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 229.
  [24] [25]
-[26] [27]) [28]
+[26] [27]) (./04.paket.tex [28]
+Bab 4.
+[29
+
+])
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [30]
+[31] [32
+
+]
 No file 00.book.ind.
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 136.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
@@ -485,14 +495,14 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 136.
 Package rerunfilecheck Info: File `00.book.out' has not changed.
-(rerunfilecheck)             Checksum: 374EE68F5D58BE763204EA5ED9C502F1;1436.
+(rerunfilecheck)             Checksum: 4751BB987C79F555ECEA3A4D3F74819D;1749.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
- 8389 strings out of 492649
- 121588 string characters out of 6129622
+ 8424 strings out of 492649
+ 122039 string characters out of 6129622
  273076 words of memory out of 5000000
- 11786 multiletter control sequences out of 15000+600000
+ 11792 multiletter control sequences out of 15000+600000
  9727 words of font info for 34 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  28i,6n,32p,654b,1790s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -506,10 +516,10 @@ local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/l
 ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/loc
 al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on 00.book.pdf (32 pages, 179369 bytes).
+Output written on 00.book.pdf (36 pages, 184717 bytes).
 PDF statistics:
- 718 PDF objects out of 1000 (max. 8388607)
- 667 compressed objects within 7 object streams
- 384 named destinations out of 1000 (max. 500000)
- 201 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 787 PDF objects out of 1000 (max. 8388607)
+ 731 compressed objects within 8 object streams
+ 410 named destinations out of 1000 (max. 500000)
+ 249 words of extra memory for PDF output out of 10000 (max. 10000000)
 
