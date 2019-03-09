@@ -1,0 +1,51 @@
+\chapter{Paket}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep dari paket (\textit{package}) dan mampu mengimplementasikan konsep tersebut pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Paket pada paradigma pemrograman berorientasi objek digunakan untuk mengelompokkan beberapa kelas yang mirip atau sejenis, bisa dianalogikan bahwa ini adalah sebuah kandar dengan nama berkas yang sejenis di dalamnya.
+
+Fungsi paket yang lain adalah agar tidak terjadi deklarasi ambigu dari sebuah kelas, misalnya, bila kita ingin mendeklarasikan 2 (dua) atau lebih kelas dengan nama yang sama namun dengan tujuan atau fungsi yang berbeda, maka cukup menggunakan penamaan paket untuk membedakan bahwa kedua kelas tersebut memang berbeda secara fungsi.
+
+Yang perlu dicatat adalah bahwa penamaan paket di Java akan mengikuti penamaan struktur kandar di \textit{file system}, jadi nama paket akan mengikuti nama kandar-nya.
+
+\section{Praktek}
+
+Kali ini akan kita coba implementasikan pengguna paket ini dan bagaimana cara memanfaatkan penamaan paket ini pada kelas \texttt{Aplikasi}. 
+
+Pertama kita perlu membuat kandar / \textit{folder} dengan nama \texttt{data}. Nama kandar ini tentu saja harus sama dengan nama paket yang akan kita gunakan, karena Java mengikuti penamaan struktur kandar di \textit{file system} yang kita gunakan.
+
+Di dalam kandar \texttt{data}, kita membuat sebuah kelas dengan nama \texttt{Mahasiswa}, isi deklarasi kelasnya adalah seperti berikut :
+
+\begin{lstlisting}
+package data;
+
+public class Mahasiswa {
+  private String nama;
+  private String nim;
+  
+  public Mahasiswa(String nim, String nama) {
+    this.nim = nim;
+    this.nama = nama;
+  }
+  
+  public void cetak() {
+    System.out.println(nim + " : " + nama);
+  }
+}
+\end{lstlisting}
+
+perhatikan deklarasi paket pada baris ke-1, penamaan paket ini mengikuti penamaan pada kandar yang telah kita buat sebelumnya, perhatikan besar kecilnya huruf karena ini berpengaruh.
+
+Kelas tersebut hanya mendefinisikan 2 (dua) properti atau atribut \texttt{nim} dan \texttt{nama}, kemudian pada konstruktornya langsung ditetapkan 2 (dua) parameter untuk mengisi atribut itu, terakhir kita berikan \textit{method} \texttt{cetak} untuk melakukan pencetakan isi dari atribut \texttt{nim} dan \texttt{nama} ke layar.
+
+Selanjutnya, di luar kandar \texttt{data}, sejajar dengan kandar ini kita buat kelas \texttt{Aplikasi}.
+
+\section{Kesimpulan}
+
+\section{Tugas}
+
+Dari tugas pada Bab 2, simpan kelas \texttt{Anggota} dalam paket \texttt{data}, kemudian tunjukkan cara memanggilnya, serta tunjukkan pula hasilnya.
