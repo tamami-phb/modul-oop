@@ -1,0 +1,169 @@
+\chapter{Rekursif, Static Modifier, dan Nested Classes}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep dan mampu mengimplementasikan rekursif, \textit{static modifier}, dan \textit{nested classes} pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Rekursif ini sebetulnya adalah sebuah \textit{method} yang memanggil dirinya sendiri, yang dalam kondisi tertentu pemanggilan terhadap fungsi atau \textit{method} tersebut berhenti.
+
+\textit{Static modifier} adalah satu kondisi dimana sebuah kelas, atribut, atau \textit{method} akan berada pada satu alamat memori. Pada saat kita membuat sebuah objek, lalu objek tersebut kita bentuk instan dari sebuah kelas, pada saat itu pula kita menyiapkan sebuah ruang pada memori untuk objek tersebut menetap. Apabila ada 2 (dua) objek yang kita bentuk, maka kita menyiapkan atau mengalokasikan sebesar 2 (dua) objek yang terbentuk, bayangkan saat ada ribuan objek yang terbentuk, otomatis penggunaan memori pun menjadi tidak efisien.
+
+Ada saatnya kita melihat bahwa sebuah kelas, atau properti, atau \textit{method} tidak perlu dicetak ke dalam sebuah objek, melainkan cukup dipanggil langsung dari posisi memori dia berada, implementasi langsung yang biasa dilakukan adalah pembuatan sebuah fungsi atau \textit{method} yang berisi rumus yang akan digunakan dalam sebuah program, atau membuat sebuah konstanta yang nilainya tidak akan berubah dan digunakan dalam lingkup program, atau sebuah koneksi basis data yang tidak perlu dibuat berulang kali, cukup dibuatkan sebuah fungsi atau \textit{method} untuk menangani koneksinya.
+
+Berikutnya adalah \textit{nested classes} yang sebetulnya ini adalah deklarasi kelas yang berada dalam kelas yang lain, kebutuhan pembentukan kelas ini biasanya spesifik hanya digunakan untuk kelas yang dideklarasikan secara publik.
+
+\section{Praktek}
+
+\subsection{Rekursif}
+
+Implementasi paling mudah untuk melakukan rekursif ini adalah pada kasus bilangan faktorial, jadi bila ada bilangan \texttt{4!}, maka akan dihitung dengan rumus berikut :
+
+\[ 4! = 4 * 3 * 2 * 1 = 24 \]
+
+Bila ada bilangan \texttt{5!}, maka akan dihitung seperti berikut :
+
+\[ 5! = 5 * 4 * 3 * 2 * 1 = 120 \]
+
+Jadi bilangan akan dikalikan dengan bilangan tersebut yang telah dikurangi dengan 1 (satu), sampai nilai dari bilangan tersebut adalah 1 (satu).
+
+Implementasi kode rekursif pada kasus faktorial ini adalah seperti berikut, kita membuat sebuah kelas \texttt{Matematika} dalam paket \texttt{util} dengan kode seperti ini :
+
+\begin{lstlisting}
+package util;
+
+public class Matematika {
+    public int faktorial(int n) {
+        if(n == 1) { return n; }
+        else {
+            return n * faktorial(n-1);
+        }
+    }
+}
+\end{lstlisting}
+
+Pada baris ke-5, kita akan melakukan pemeriksaan bahwa apabila nilai \texttt{n} (parameter yang disertakan pada \textit{method} \texttt{faktorial()}) bernilai \texttt{1} (satu), maka kembalikan nilai \texttt{1} (satu), namun selain itu akan dikembalikan hasil dari rumus pada baris ke-7, yaitu \texttt{n * faktorial(n-1)}, \textit{method} \texttt{faktorial()} kembali di panggil namun kali ini dengan nilai \texttt{n-1}.
+
+Pemanggilan fungsi atau \textit{method} \texttt{faktorial()} ini akan terus berlanjut sampai nilai di \texttt{n} sama dengan \texttt{1}.
+
+Kemudian kita melakukan implementasi penggunaan \textit{method} \texttt{faktorial()} ini dalam kelas \texttt{Aplikasi} dengan kode seperti berikut :
+
+\begin{lstlisting}
+import util.*;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    Matematika mtk = new Matematika();
+    int hasil = mtk.faktorial(new Integer(args[0]));
+    System.out.println("hasil : " + hasil);
+  }
+}
+\end{lstlisting}
+
+Seperti biasa kita membentuk sebuah instan dari kelas \texttt{Matematika()} pada baris ke-5, kemudian memanggil \textit{method} \texttt{faktorial()} pada baris ke-6 yang parameternya diambilkan dari parameter aplikasi yang disertakan pada saat menjalankan program, kemudian pada baris ke-7, hasil faktorial yang telah diproses ditampilkan ke layar.
+
+\subsection{Static Modifier}
+
+Seperti penjelasan sebelumnya, penggunaan \textit{static modifier} ini akan menyebabkan sebuah kelas, atribut, atau \textit{method} menempati satu lokasi pada memori, untuk lebih jelasnya, mari perhatikan kelas berikut :
+
+\begin{lstlisting}
+public class PercobaanStatic {
+    public static String atributStatik;
+
+    public String atribut;
+}
+\end{lstlisting}
+
+Disediakan 2 (dua) buah atribut, yang satu \texttt{static} dan yang satu tanpa \texttt{static}. Perhatikan saat kelas \texttt{PercobaanStatic} digunakan pada kelas \texttt{Aplikasi} berikut ini :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    PercobaanStatic s1 = new PercobaanStatic();
+    PercobaanStatic s2 = new PercobaanStatic();
+    
+    s1.atribut = "Isi s1";
+    s2.atribut = "Isi s2";
+    s1.atributStatik = "isi statik s1";
+    s2.atributStatik = "isi statik s2";
+    System.out.println(s1.atribut);
+    System.out.println(s2.atribut);
+    System.out.println(s1.atributStatik);
+    System.out.println(s2.atributStatik);
+  }
+}
+\end{lstlisting}
+
+Hasil dari kode tersebut apabila kita \textit{compile} dan jalankan adalah seperti ini :
+
+\begin{lstlisting}
+Isi s1
+Isi s2
+isi statik s2
+isi statik s2
+\end{lstlisting}
+
+Yang janggal adalah hasil keluaran pada baris ke-3, isinya sama seperti pada baris ke-4, ini menunjukkan bahwa properti \texttt{atributStatik} berada pada satu alamat memori yang sama, sehingga apabila dari ada perubah, maka perubahan terakhir yang akan dihasilkan.
+
+Beberapa IDE atau \textit{editor} akan menghasilkan sebuah pesan bahwa properti \texttt{atributStatik} ini sebaiknya dipanggil dengan cara yang statik pula.
+
+Jadi untuk pemberian nilainya sebetulnya bisa mengisikan nilai pada \texttt{s1.atributStatik}, atau \texttt{s2.atributStatik}, atau bahkan yang disarankan adalah bentuk \texttt{PercobaanStatik.atributStatik}. 
+
+\subsection{Nested Classes}
+
+Contoh dari \textit{nested classes} ini sebetulnya cukup mudah, yaitu ada sebuah kelas yang berada dalam kelas lainnya, perhatikan kode berikut yang diketik dalam berkas \texttt{Aplikasi.java} :
+
+\begin{lstlisting}
+public class Aplikasi {
+
+  private Mahasiswa mhs;
+
+  public Aplikasi() { mhs = new Mahasiswa("19001", "tamami"); }
+
+  public Mahasiswa getMhs() { return mhs; }
+
+  public static void main(String args[]) {
+    new Aplikasi().getMhs().cetak();
+  }
+
+  class Mahasiswa {
+    private String nim;
+    private String nama;
+
+    public Mahasiswa(String nim, String nama) {
+      this.nim = nim; this.nama = nama;
+    }
+
+    public void cetak() {
+      System.out.println(nim + " : " + nama);
+    }
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada baris ke-13, deklarasi kelas \texttt{Mahasiswa} berada di dalam kelas \texttt{Aplikasi}, kemudian kelas aplikasi akan membuat sebuah objek \texttt{mhs} dari kelas \texttt{Mahasiswa} pada baris ke-3. 
+
+Kelas \texttt{Aplikasi} pun memiliki sebuah konstruktor yang akan membuat instan untuk objek \texttt{mhs} serta sebuah \textit{method} untuk melakukan akses terhadap objek \texttt{mhs}.
+
+Pada saat aplikasi dijalankan, maka akan berangkat dari baris ke-10, dimana akan dibuatkan instan objek secara anonim dari kelas \texttt{Aplikasi}, kemudian memanggil fungsi \texttt{getMhs()} untuk mendapatkan objek \texttt{mhs} yang berada di dalamnya, kemudian memanggil fungsi atau \textit{method} \texttt{cetak()} milik objek \texttt{mhs}.
+
+\section{Kesimpulan}
+
+Bahwa penggunaan model rekursif dimungkinkan pada bahasa pemrograman Java, dimana sebuah \textit{method} mampu memanggil dirinya sendiri, namun dengan catatan diberikan batasan yang jelas dimana proses rekursif harus berhenti, harap diperhatikan pula bahwa semakin banyak rekursif yang terjadi, maka penggunaan memori akan berbanding lurus dengan kejadiannya.
+
+Kemudian ada saatnya dimana kita membutuhkan sebuah kelas, atribut, atau fungsi yang biasanya hanya berbentuk operasi atau rumusan dan tidak menyimpan sebuah data, sehingga setiap instan kelas tidak perlu membuatnya secara sendiri-sendiri, cukup deklarasikan sebagai \texttt{static} maka kelas, atau atribut, atau \textit{method} tersebut cukup dialokasikan sekali pada suatu ruang di memori.
+
+Sedangkan penggunaan \textit{nested classes} tentunya akan spesifik pada kelas yang membutuhkan saja, dimana aksesnya terkadang akan dijadikan \textit{private} sehingga hanya kelas yang berada di atasnya saja yang mampu melakukan akses terhadap kelas bersarang tersebut.
+
+\section{Tugas}
+
+Buatlah sebuah solusi rekursif untuk menghitung, apabila diberikan sebuah angka, maka akan menghitung penjumlahannya dari 1 sampai angka tersebut, bila angka 5 yang dimasukkan, maka akan menghitung seperti berikut : 
+
+\[5 = 5 + 4 + 3 + 2 + 1 = 15 \]
+
+apabila angka 7 yang dimasukkan, maka akan menghitung seperti berikut :
+
+\[ 7 = 7 + 6 + 5 + 4 + 3 + 2 + 1 = 28 \]
+
+Mirip seperti faktorial, namun dalam operasi penjumlahan.
