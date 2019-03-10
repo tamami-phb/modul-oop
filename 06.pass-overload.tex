@@ -1,0 +1,89 @@
+\chapter{Passing Object dan Overloading Methods}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami konsep \textit{passing object} dan \textit{overloading method} serta mampu mengimplementasikan konsep tersebut pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Seperti terjemahan bebasnya bahwa \textit{passing object} sebetulnya adalah melewatkan atau menyertakan atau mengirimkan sebuah objek untuk kemudian diproses atau digunakan dalam \textit{method} yang membutuhkan.
+
+Sedangkan \textit{overload method} sebetulnya sudah pernah kita implementasikan pada kode yang kita ketik di Bab sebelumnya, yaitu bagaimana sebuah \textit{method} dengan nama yang sama, namun dapat melakukan operasi yang berbeda tergantung tipe data pada parameter yang disertakan.
+
+\section{Praktek}
+
+\subsection{Passing Object}
+
+Contoh paling sederhana untuk \textit{passing object} ini adalah pada \textit{method} aksesor seperti kode berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+  private String nim;
+  private String nama;
+  
+  public Mahasiswa(String nim, String nama) {
+    this.nim = nim; this.nama = nama;
+  }
+  
+  public String getNim() { return nim; }
+  
+  public void setNim(String nim) { this.nim = nim; }
+  
+  public String getNama() { return nama; }
+  
+  public void setNama(String nama) { this.nama = nama; }
+}
+\end{lstlisting}
+
+Pada kode di atas, konstruktor menyediakan 2 (dua) parameter \texttt{nim} dan \texttt{nama}, artinya kita dapat melewatkan 2 (dua) objek pada konstruktor ini dengan tipe data \texttt{String}, begitu pula dengan \textit{method} \texttt{setNim()} dan \texttt{setNama()}, masing-masing memiliki sebuah parameter dengan tipe data \texttt{String}, sehingga kita dapat menyertakan sebuah objek dengan tipe data \texttt{String} ke dalamnya.
+
+Kemudian untuk penggunaan \textit{method} \texttt{getNim()} dan \texttt{getNama()}, \textit{method} ini akan mengembalikan atau mengirimkan sebuah objek dengan tipe data \texttt{String}.
+
+Mari kita lihat implementasinya pada kelas \texttt{Aplikasi} berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa mhs = new Mahasiswa("19001", "tamami");
+    System.out.println(mhs.getNim() + " : " + mhs.getNama());
+  }
+}
+\end{lstlisting}
+
+Kita lihat pada baris ke-3 bahwa pemanggilan konstruktor \texttt{Mahasiswa()} akan mengirimkan 2 (dua) buah objek bertipe data \texttt{String} dengan isi \texttt{"19001"} dan \texttt{"tamami"}. Kemudian pada baris ke-4, perintah \texttt{println} akan menerima objek yang dikirimkan dari \textit{method} \texttt{getNim()} dan \texttt{getNama()}.
+
+\subsection{Overloading Method}
+
+Sama seperti konstruktor, sebuah \textit{method} pun dapat dilakukan \textit{overload} terhadapnya, perhatikan contoh kode berikut :
+
+\begin{lstlisting}
+public class Mahasiswa {
+
+  private String nim;
+  private String nama;
+  
+  public void setData(String nim, String nama) {
+    this.nim = nim;
+    this.nama = nama;
+  }
+
+  public void setData(int nim, String nama) {
+    this.nim = "" + nim;
+    this.nama = nama;
+  }
+}
+\end{lstlisting}
+
+Pada contoh di atas, \textit{method} \texttt{setData()} memiliki 2 (dua) bentuk, \textit{method} ini mengalami \textit{overloading} dimana \textit{method} yang pertama akan menerima 2 (dua) parameter bertipe \texttt{String}, dan \textit{method} yang kedua akan menerima sebuah parameter bertipe data \texttt{int} dan satu lagi bertipe \texttt{String}.
+
+\section{Kesimpulan}
+
+Bahwa \textit{passing object} adalah istilah untuk mengirimkan sebuah objek ke dalam \textit{method} atau konstruktor sebagai bahan untuk melakukan proses data, atau menjadi hasil dari sebuah proses di dalam \textit{method}.
+
+Sedangkan \textit{overloading method} memberikan fleksibilitas kepada pemrogram untuk membuat sebuah \textit{interface} kelas dengan nama yang sama namun mampu melakukan operasi terhadap berbagai objek dengan tipe data yang berbeda.
+
+\section{Tugas}
+
+Dari tugas pada Bab 4, tambahkan 2 (dua) buah \textit{method} pada kelas \texttt{Anggota} dengan nama \texttt{setNoAnggota()} yang memiliki sebuah parameter, parameter pada \textit{method} pertama akan bertipe \texttt{int} dan yang kedua akan bertipe \texttt{String}.
+
+Implementasikan kedua \textit{method} tersebut dengan cara memanggilnya dari kelas \texttt{Aplikasi}.
