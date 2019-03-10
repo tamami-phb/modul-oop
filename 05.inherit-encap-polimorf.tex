@@ -12,7 +12,9 @@ Dengan kata lain, kelas yang mewarisi, akan memiliki seluruh atribut dan \textit
 
 Konsep \textit{Encapsulation} adalah aturan pada paradigma pemrograman berorientasi objek bahwa seluruh informasi detail dalam kelas perlu disembunyikan, satu-satunya cara untuk melakukan akses terhadap informasi ini dilakukan melalui \textit{interface} yang kita kenal dengan istilah \textit{method} atau fungsi, atau prosedur.
 
-Sedangkan pengertian dari Polimorphism adalah pada kelas yang mewarisi atribut dan \textit{method} dari kelas di atasnya, dapat memiliki implementasi mandiri yang berbeda dari kelas diatasnya, atau bahkan dari kelas lain yang mewarisi dari kelas yang sama.
+Polimorfisme sendiri memiliki beberapa pengertian, yang pertama adalah \textit{method} atau konstruktor yang memiliki banyak bentuk, sehingga mampu memproses objek berdasarkan tipe datanya, dalam pengertian lain yaitu sebuah \textit{method} dengan implementasi yang bermacam-macam. 
+
+Bentuk implementasi dari polimorfisme ini sendiri nantinya dapat berupa \textit{overloading} yang telah kita bahas sebelumnya, atau \textit{overriding}.
 
 Kita perjelas saja ketiga konsep tersebut di atas pada bagian praktek.
 
@@ -20,7 +22,7 @@ Kita perjelas saja ketiga konsep tersebut di atas pada bagian praktek.
 
 \subsection{Inheritance}
 
-Implementasi untuk \textit{inheritance} atau pewarisan ini, misalkan kita memiliki sebuah kelas dengan nama \texttt{Personal} yang nantinya sebagai pewaris terhadap kelas \texttt{Mahasiswa} dan \texttt{Dosen}. 
+Implementasi untuk \textit{inheritance} atau pewarisan ini, misalkan kita memiliki sebuah kelas dengan nama \texttt{Personal} yang nantinya sebagai pewaris terhadap kelas \texttt{Mahasiswa}. 
 
 Deklarasi untuk kelas \texttt{Personal} ini kita simpan dalam paket \texttt{entitas}, berikut adalah isi kode dari kelas \texttt{Personal} :
 
@@ -104,8 +106,162 @@ Perhatikan bahwa pada baris ke-12, ada pemanggilan \textit{method} \texttt{cetak
 
 \subsection{Encapsulation}
 
+\textit{Encapsulation} atau enkapsulasi sendiri sebetulnya sudah kita implementasikan di bagian sebelumnya, kita pratinjau kembali kode dari kelas \texttt{Personal} berikut :
+
+\begin{lstlisting}
+package entitas;
+
+public class Personal {
+  
+  private String nik;
+  private String nama;
+  
+  public Personal() {
+    nik = "3376000";
+    nama = "tidak ada";
+  }  
+  
+  public Personal(String nik, String nama) {
+    this.nik = nik;
+    this.nama = nama;
+  }
+  
+  public void cetak() {
+    System.out.println(nik + " : " + nama);
+  }
+  
+  // getter and setter
+  // ...
+  
+}
+\end{lstlisting}
+
+Pada kelas tersebut, kita telah menyembunyikan atribut \texttt{nik} dan \texttt{nama}, dan memberikan \textit{method} untuk melakukan akses terhadap kedua properti atau atribut tersebut dengan \textit{method getter} dan \textit{setter}.
+
+Sampai disini kita telah mengimplementasikan konsep enkapsulasi dari paradigma pemrograman berorientasi objek dengan cara menyembunyikan detail dari kelas, dan hanya membuka \textit{interface} yang dibutuhkan oleh kelas lain. Kedepan kita akan menggunakan pola ini sebagai standar.
+
 \subsection{Polimorphism}
+
+Seperti dijelaskan sebelumnya bahwa pada konsep \textit{polimorphism} atau polimorfisme, konstruktor atau sebuah \textit{method} mampu melakukan operasi yang berbeda-beda sesuai dengan tipe data objek yang akan di proses, atau sebuah \textit{method} yang memiliki banyak implementasi berbeda.
+
+Untuk definisi pertama sudah kita bahas pada Bab sebelumnya bahwa sebuah konstruktor, yang sebetulnya adalah \textit{method} juga, dapat memiliki berbagai macam bentuk dengan jumlah parameter sebagai pembeda. Sedangkan untuk pengertian kedua, kita coba implementasikan seperti berikut.
+
+Kita akan coba perluas implementasi kelas \texttt{Personal}, selain kelas \texttt{Mahasiswa}, kita akan membuat kelas \texttt{Dosen} yang merupakan pewaris dari kelas \texttt{Personal} juga, berikut isi dari kelas \texttt{Dosen} :
+
+\begin{lstlisting}
+package entitas;
+
+public class Dosen extends Personal {
+
+    private String nidn;
+
+    public Dosen(String nidn, String nama) {
+        super();
+        this.nidn = nidn;
+        setNama(nama);
+    }
+
+    public void cetak() {
+        System.out.println(nidn + " : " + getNama());
+    }
+
+}
+\end{lstlisting}
+
+Lalu kita ubah deklarasi kelas \texttt{Mahasiswa} menjadi seperti berikut :
+
+\begin{lstlisting}
+package entitas;
+
+public class Mahasiswa extends Personal {
+
+    private String nim;
+
+    public Mahasiswa(String nim, String nama) {
+        super();
+        this.nim = nim;
+        setNama(nama);
+    }
+
+    public void cetak() {
+        System.out.println(nim + " : " + getNama());
+    }
+
+}
+\end{lstlisting}
+
+Perhatikan bahwa masing-masing kelas, baik kelas \texttt{Mahasiswa} dan kelas \texttt{Dosen} memiliki \texttt{method} \texttt{cetak()}, sekarang kita lihat bagaimana kode pada kelas \texttt{Aplikasi} yang telah kita modifikasi seperti berikut :
+
+\begin{lstlisting}
+import entitas.*;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    Mahasiswa[] mhs = {
+      new Mahasiswa("19001", "tamami"),
+      new Mahasiswa("19002", "diva"),
+      new Mahasiswa("19003", "nabila")
+    };
+
+    Dosen[] dosen = {
+      new Dosen("1984001", "Dosen A"),
+      new Dosen("1991001", "Dosen B"),
+      new Dosen("1989002", "Dosen C")
+    };
+
+    System.out.println("Daftar Mahasiswa:");
+    for(Personal personal : mhs) {
+      personal.cetak();
+    }
+
+    System.out.println("\nDaftar Dosen:");
+    for(Personal personal : dosen) {
+      personal.cetak();
+    }
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-1, karena kita membutuhkan kelas \texttt{Mahasiswa} dan kelas \texttt{Dosen}, maka kita perlu melakukan \texttt{import}, kita menggunakan tanda \texttt{*} (bintang) disini hanya untuk meringkas bahwa seluruh kelas yang berada dalam paket \texttt{entitas} akan kita gunakan pada kelas ini, bentuk lain dengan tujuan yang sama dapat dideklarasikan seperti berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+import entitas.Dosen;
+import entitas.Personal;
+\end{lstlisting}
+
+Pada blok baris ke-5 sampai ke-9, kita membuat sebuah larik dengan isi 3 (tiga) objek dari kelas \texttt{Mahasiswa}, kemudian pada blok baris ke-11 sampai ke-15, kita pun membuat sebuah larik dengan isi 3 (tiga) objek dari kelas \texttt{Dosen}.
+
+Pada blok baris ke-18 sampai baris ke-20, dan baris ke-23 sampai ke-25, kita menggunakan kelas \texttt{Personal} untuk menampilkan datanya, namun objek yang diambil berbeda, yang satu dari kelas \texttt{Mahasiswa}, dan yang lain dari kelas \texttt{Dosen}. 
+
+Karena masing-masing kelas memiliki implementasi yang berbeda, maka hasil keluaran yang kita terima pun menjadi berbeda, inilah yang disebut polimorfisme, berikut hasil keluaran yang seharusnya tampil pada saat kita menjalankannya :
+
+\begin{lstlisting}
+Daftar Mahasiswa:
+19001 : tamami
+19002 : diva
+19003 : nabila
+
+Daftar Dosen:
+1984001 : Dosen A
+1991001 : Dosen B
+1989002 : Dosen C
+\end{lstlisting}
 
 \section{Kesimpulan}
 
+Bahwa konsep pewarisan disediakan dalam paradigma pemrograman berorientasi objek untuk mempermudah pemrograman dengan cara menggunakan kelas yang sudah ada untuk kemudian dikembangkan kembali, jadi tidak perlu membangunnya dari awal.
+
+Enkapsulasi ada pada paradigma pemrograman berorientasi objek untuk menjaga keamanan data, fleksibilitas, dan memudahkan pemeliharaan, jadi jangan sampai data pada properti terubah secara sembarangan tanpa terfilter melalui \textit{interface} yang disediakan oleh si pembuat kelas dalam bentuk \textit{method}.
+
+Sedangkan adanya polimorfisme memungkinkan pemrogram mendefinisikan banyak konstruktor dan \textit{method} untuk digunakan oleh pemrogram lain yang ingin menggunakan, di sisi lain, membuka peluang pemrogram lain untuk melakukan implementasi yang berbeda sesuai dengan kebutuhan.
+
 \section{Tugas}
+
+Pada sebuah tempat pelayanan penitipan hewan, akan dibuat sebuah aplikasi yang melakukan manajemen terhadap hewan yang dititipkan.
+
+Tugas kali ini hanya membuat sebagian kecil dari bagian besar sebuah aplikasi tersebut, berikut yang perlu dikerjakan.
+
+Buatlah sebuah kelas \texttt{Hewan}, kelas ini memiliki sebuah konstruktor dengan 2 (dua) buah parameter yang berisi nomor identitas dan nama pemilik dari \texttt{Hewan} tersebut, dan 2 (dua) buah \textit{method}, yang pertama mengembalikan nilai berupa informasi dalam bentuk teks (String) dengan format \texttt{\{id\} : \{pemilik\}}, dan yang kedua akan mengembalikan nilai \texttt{true} atau \texttt{false} yang memberikan tanda bahwa hewan tersebut sedang dititipkan atau tidak, kita beri nama \textit{method} ini sebagai \texttt{status()}.
+
+Kemudian buat 2 (dua) kelas, \texttt{Anjing} dan \texttt{Ikan} yang mewarisi kelas \texttt{Hewan}, kelas \texttt{Anjing} akan memiliki atribut \texttt{statusSuntikRabies}, sedangkan kelas \texttt{Ikan} akan memiliki atribut \texttt{statusGantiAir}, masing-masing kelas tersebut akan merubah isi dari \textit{method} \texttt{status} untuk menampilkan informasi apakah hewan tersebut dititipkan atau tidak, dan menampilkan informasi apakah sudah pernah disuntik rabies untuk \texttt{Anjing} dan apakah sudah pernah ganti air untuk \texttt{Ikan}.
