@@ -61,5 +61,5 @@
 \contentsline {subsection}{\numberline {7.3.1}Rekursif}{50}{subsection.7.3.1}
 \contentsline {subsection}{\numberline {7.3.2}Static Modifier}{52}{subsection.7.3.2}
 \contentsline {subsection}{\numberline {7.3.3}Nested Classes}{53}{subsection.7.3.3}
-\contentsline {section}{\numberline {7.4}Kesimpulan}{54}{section.7.4}
-\contentsline {section}{\numberline {7.5}Tugas}{54}{section.7.5}
+\contentsline {section}{\numberline {7.4}Kesimpulan}{55}{section.7.4}
+\contentsline {section}{\numberline {7.5}Tugas}{55}{section.7.5}
