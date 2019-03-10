@@ -54,3 +54,12 @@
 \contentsline {subsection}{\numberline {6.3.2}Overloading Method}{47}{subsection.6.3.2}
 \contentsline {section}{\numberline {6.4}Kesimpulan}{48}{section.6.4}
 \contentsline {section}{\numberline {6.5}Tugas}{48}{section.6.5}
+\contentsline {chapter}{\numberline {7}Rekursif, Static Modifier, dan Nested Classes}{49}{chapter.7}
+\contentsline {section}{\numberline {7.1}Tujuan}{49}{section.7.1}
+\contentsline {section}{\numberline {7.2}Pengantar}{49}{section.7.2}
+\contentsline {section}{\numberline {7.3}Praktek}{50}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Rekursif}{50}{subsection.7.3.1}
+\contentsline {subsection}{\numberline {7.3.2}Static Modifier}{52}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Nested Classes}{53}{subsection.7.3.3}
+\contentsline {section}{\numberline {7.4}Kesimpulan}{54}{section.7.4}
+\contentsline {section}{\numberline {7.5}Tugas}{54}{section.7.5}
