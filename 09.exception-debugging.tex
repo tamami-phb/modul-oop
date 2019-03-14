@@ -1,0 +1,43 @@
+\chapter{Exception dan Debugging}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa mampu memahami pengertian dan bentuk \textit{exception} pada Java dan mampu melakukan \textit{debugging} pada bahasa pemrograman Java.
+
+\section{Pengantar}
+
+\textit{Exception} sendiri sebetulnya adalah suatu kondisi dimana program menemukan kesalahan yang tidak semestinya saat instruksinya dijalankan. 
+
+Jadi pada saat kita \textit{compile} kode program yang telah kita bangun, \textit{compiler} tidak menemukan kesalahan ketikkan atau logika kode program, namun pada saat aplikasi dijalankan, semua fungsinya diujicoba, barulah muncul suatu kesalahan yang tidak semestinya, kondisi inilah yang disebut \textit{exception}. 
+
+Sedangkan \textit{debugging} adalah sebuah cara untuk mencari dan mengurangi kesalahan atau kerusakan dari kode program yang telah dibangun.
+
+\section{Praktek}
+
+Pada praktek sebelumnya mungkin ada yang sudah pernah mencoba kode berikut :
+
+\begin{lstlisting}
+public class Aplikasi {
+  public static void main(String args[]) {
+    int angka = new Integer(args[0]);
+    
+    System.out.println(angka);
+  }
+}
+\end{lstlisting}
+
+Kode tersebut, apabila dilakukan \textit{compile} tidak akan ada masalah. Masalah timbul apabila aplikasi dijalankan tanpa parameter seperti kode berikut :
+
+\begin{lstlisting}
+$ java Aplikasi
+\end{lstlisting}
+
+Perhatikan bahwa sebuah \textit{exception} muncul akibat perintah tersebut, yang memberikan pesan ke kita bahwa akses ke larik \texttt{args} melewati batas (\textit{out of bounds}), karena kita melakukan akses pada baris ke-3 untuk mengambil data larik \texttt{args} yang pertama.
+
+Informasi \textit{exception} semacam ini akan sering timbul pada program yang kita bangun yang biasanya bersumber dari desain yang kurang lengkap. Namun seiring dengan jam terbang pemrogram, permasalahan seperti ini biasanya akan cepat teratasi.
+
+Untuk \textit{exception} sendiri sebetulnya dapat kita produksi sendiri dari logika kode program yang kita bangun, 
+
+\section{Kesimpulan}
+
+\section{Tugas}
