@@ -1,0 +1,292 @@
+\chapter{Sorting dan Searching}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami bagaimana implementasi \textit{sorting} dan \textit{searching} di Java.
+
+\section{Pengantar}
+
+Implementasi \textit{searching} dan \textit{sorting} pada bahasa pemrograman Java sebetulnya telah disediakan oleh sebuah kelas yang bernama \texttt{Collections}, mari kita manfaatkan kelas ini untuk melakukan \textit{sorting} dan \textit{searching}.
+
+\section{Praktek}
+
+\subsection{Sorting}
+
+Yang pertama kita akan mengurutkan data yang sederhana, seperti teks, berikut contoh kodenya :
+
+\begin{lstlisting}
+import java.util.*;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    List<String> test = new LinkedList<>();
+
+    test.add("tamami");
+    test.add("diva");
+    test.add("nabila");
+
+    for(String data : test) {
+      System.out.println(data);
+    }
+
+    Collections.sort(test);
+    for(String data : test) {
+      System.out.println(data);
+    }
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-5, kita menyiapkan data dalam bentuk \texttt{List}, datanya yang dimasukkan berupa teks (\texttt{String}), kita melihat tampilan data apa adanya pada blok baris ke-11 sampai ke-13, kemudian pada baris ke-15, data yang berada dalam \texttt{List} diurutkan, hasil pengurutannya dapat kita lihat pada blok baris ke-16 sampai ke-18.
+
+Lalu bagaimana saat bentuk yang akan kita urutkan berbentuk objek? Untuk hal ini perlakuan khusus, kita perlu mendeklarasikan sebuah kelas yang mengimplementasikan \textit{interface} \texttt{Comparator} pada paket \texttt{java.util}.
+
+Contoh kali ini kita akan menggunakan kelas \texttt{Mahasiswa} yang telah kita buat, kemudian kita implementasikan \textit{interface} \texttt{Comparator} pada kelas \texttt{ComparatorMahasiswa}. Kelas ini akan mengimplementasikan pengurutan berdasarkan \texttt{nim}. Berikut deklarasi kelasnya :
+
+\begin{lstlisting}
+package util;
+
+import java.util.Comparator;
+import entitas.Mahasiswa;
+
+public class ComparatorMahasiswa implements Comparator<Mahasiswa> {
+
+    public int compare(Mahasiswa m1, Mahasiswa m2) {
+        if(new Integer(m1.getNim()) < new Integer(m2.getNim())) return -1;
+        else if(new Integer(m1.getNim()) == new Integer(m2.getNim())) return 0;
+        else return 1;
+    }
+    
+}
+\end{lstlisting}
+
+Perhatikan baris ke-6 bahwa kelas ini mengimplementasikan \textit{interface} \texttt{Comparator}, yang perlu kita deklarasikan ulang adalah \textit{method} \texttt{compare} milik \textit{interface} \texttt{Comparator} dengan 2 (dua) parameter dengan tipe data \texttt{T} yang dapat dideklarasikan ulang menjadi sebuah kelas yang kita tentukan sendiri, dalam kasus ini kita tentukan sebagai kelas \texttt{Mahasiswa}.
+
+\textit{Method} \texttt{compare} ini akan mengikuti aturan seperti berikut, bila nilai \texttt{m1} kurang dari \texttt{m2}, maka akan mengembalikan nilai minus, apabila nilai \texttt{m1} sama dengan \texttt{m2}, maka akan mengembalikan nilai 0 (nol), sedangkan bila nilai \texttt{m1} lebih dari \texttt{m2} maka akan mengembalikan nilai positif.
+
+Setelah \textit{method} ini selesai kita deklarasikan, kita coba buat implementasi pada kelas \texttt{Aplikasi} seperti berikut :
+
+\begin{lstlisting}
+import java.util.*;
+import util.*;
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    List<Mahasiswa> test = new LinkedList<>();
+
+    test.add(new Mahasiswa("19003", "diva"));
+    test.add(new Mahasiswa("19002", "nabila"));
+    test.add(new Mahasiswa("19001", "tamami"));
+
+    System.out.println("sebelum sort:");
+    for(Mahasiswa data : test) {
+      System.out.println(data.getNim() + " : " + data.getNama());
+    }
+
+    System.out.println("\n\nSetelah sort:");
+    Collections.sort(test, new ComparatorMahasiswa());
+    for(Mahasiswa data : test) {
+      System.out.println(data.getNim() + " : " + data.getNama());
+    }
+  }
+}
+\end{lstlisting}
+
+Pada bagian awal sama saja seperti sebelumnya, kita mengisikan data ke dalam \texttt{List} namun kali ini datanya berbentuk objek yang merupakan instan dari kelas \texttt{Mahasiswa}. 
+
+Kemudian pada baris ke-17, kita melihat pemanggilan \textit{method} \texttt{sort} muncul parameter ke-2 yang merupakan instan dari kelas \texttt{ComparatorMahasiswa()} yang telah kita buat sebelumnya, gambaran hasil keluaran jika programnya kita jalankan adaalh seperti berikut :
+
+\begin{lstlisting}
+Sebelum sort:
+19003 : diva
+19002 : nabila
+19001 : tamami
+
+
+Setelah sort:
+19001 : tamami
+19002 : nabila
+19003 : diva
+\end{lstlisting}
+
+Hasilnya akan berurut sesuai dengan NIM (Nomor Induk Mahasiswa), apabila kita ingin mengurutkan berdasarkan namanya, kita tinggal modifikasi saja kelas \texttt{ComparatorMahasiswa}.
+
+\subsection{Searching}
+
+Banyak algoritma \textit{searching} atau pencarian yang ada, namun pada kelas \texttt{Collections} hanya ada satu algoritma yang diimplementasikan, yaitu \textit{binary search}.
+
+Kondisi pencarian menggunakan algoritma ini mengharuskan kita mengurutkan datanya terlebih dahulu sebelum kemudian datanya dapat dicari. 
+
+Misalkan sebuah data akan berurut dari kiri ke kanan, pada bagian ujung kiri adalah data yang paling kecil, dan data pada ujung kanan adalah data yang paling besar, titik awal pencarian berada di tengah barisan data, apabila data yang dicari lebih besar dari data yang berada di tengah, maka pencarian akan berfokus pada bagian kanan, apabila data yang dicari lebih kecil dari data yang berada di tengah, maka pencarian akan fokus berada di bagian kiri baris data, terus membagi dua sampai datanya ditemukan.
+
+Implementasinya adalah seperti berikut :
+
+\begin{lstlisting}
+import java.util.*;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    List<Integer> test = new LinkedList<>();
+
+    test.add(3);
+    test.add(2);
+    test.add(1);
+    test.add(5);
+    test.add(4);
+    test.add(7);
+    test.add(6);
+
+    System.out.println("Sebelum sort:");
+    for(Integer data : test) {
+      System.out.println("-> " + data);
+    }
+
+    System.out.println("\n\nSetelah sort:");
+    Collections.sort(test);
+    for(Integer data : test) {
+      System.out.println("=> " + data);
+    }
+
+    System.out.print("Hasil pencarian data 7 : ");
+    System.out.println(Collections.binarySearch(test, 7));
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada baris ke-21, kita perlu melakukan pengurutan data sebelum datanya dapat dicari dengan metode pencarian biner. Pencarian dilakukan pada baris ke-27.
+
+Hasil keluaran dari program di atas adalah seperti berikut :
+
+\begin{lstlisting}
+Sebelum sort:
+-> 3
+-> 2
+-> 1
+-> 5
+-> 4
+-> 7
+-> 6
+
+
+Setelah sort:
+=> 1
+=> 2
+=> 3
+=> 4
+=> 5
+=> 6
+=> 7
+Hasil pencarian data 7 : 6
+\end{lstlisting}
+
+Hasil pencarian data 7 adalah 6 karena penomoran indeks dari daftar akan dimulasi dari 0 (nol).
+
+Lalu bagaimana untuk mencari sebuah objek dengan dengan cara di atas? kita perlu menyiapkan implementasi \textit{interface} \texttt{Comparator} seperti sebelumnya.
+
+Kelas \texttt{Mahasiswa} akan memiliki 3 (tiga) properti, yaitu \texttt{nik} dan \texttt{nama} yang diwariskan dari kelas \texttt{Personal}, dan \texttt{nim} yang dibentuk di kelas \texttt{Mahasiswa}.
+
+Langkah pertama yang perlu kita ketahui adalah, kita akan mencari berdasarkan properti apa? Bila berdasarkan \texttt{nama}, maka data perlu diurutkan berdasarkan \texttt{nama} terlebih dahulu, apabila akan mencari berdasarkan properti \texttt{nim}, maka \texttt{nim} perlu diurutkan terlebih dahulu.
+
+Contoh berikut adalah kita mencari sebuah objek berdasarkan \texttt{nim}, maka kita perlu mengurutkan data berdasarkan \texttt{nim} terlebih dahulu, berikut isi kelas aplikasinya :
+
+\begin{lstlisting}
+import java.util.*;
+import util.ComparatorMahasiswa;
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    List<Mahasiswa> data = new LinkedList<>();
+
+    data.add(new Mahasiswa("19008", "tamami"));
+    data.add(new Mahasiswa("19005", "diva"));
+    data.add(new Mahasiswa("19003", "nabila"));
+    data.add(new Mahasiswa("19001", "peni"));
+    data.add(new Mahasiswa("19002", "honda"));
+    data.add(new Mahasiswa("19004", "suzuki"));
+    data.add(new Mahasiswa("19006", "mazda"));
+    data.add(new Mahasiswa("19007", "toyota"));
+
+    System.out.println("Sebelum sort:");
+    for(Mahasiswa mhs : data) {
+      System.out.println("-> " + mhs.getNim() + " : " + mhs.getNama());
+    }
+
+    System.out.println("\n\nSetelah sort:");
+    Collections.sort(data, new ComparatorMahasiswa());
+    for(Mahasiswa mhs : data) {
+      System.out.println("=> " + mhs.getNim() + " : " + mhs.getNama());
+    }
+
+    System.out.print("Hasil pencarian data mahasiswa untuk nim 19004 : ");
+    System.out.println(Collections.binarySearch(data, new Mahasiswa("19004", null), new ComparatorMahasiswa()));
+  }
+}
+\end{lstlisting}
+
+Perhatikan baris ke-24, pada saat mengurutkan data, kita menggunakan instan dari kelas \texttt{ComparatorMahasiswa}, dengan kelas ini pula nantinya kita akan mencari data. 
+
+Kemudian perhatikan pada baris ke-30 bahwa kita akan mencari data pada larik \texttt{data}, data yang kita cari adalah objek dari kelas \texttt{Mahasiswa} dengan \texttt{nim} berisi \texttt{19004}, kelas \texttt{ComparatorMahasiswa} kita tempatkan pada parameter ke-3 dari \textit{method} \texttt{binarySearch} ini. Sekarang perhatikan deklarasi kelas \texttt{ComparatorMahasiswa} berikut :
+
+\begin{lstlisting}
+package util;
+
+import java.util.Comparator;
+import entitas.Mahasiswa;
+
+public class ComparatorMahasiswa implements Comparator<Mahasiswa> {
+
+    public int compare(Mahasiswa m1, Mahasiswa m2) {
+        return m1.getNim().compareTo(m2.getNim());
+    }
+    
+}
+\end{lstlisting}
+
+perhatikan baris ke-6, bahwa kelas ini akan mewarisi \textit{interface} \texttt{Comparator}, dimana kelas \texttt{ComparatorMahasiswa} perlu mengimplementasikan \textit{method} \texttt{compare} milik \textit{interface} \texttt{Comparator}.
+
+\textit{Method} \texttt{compare} ini seperti pembahasan sebelumnya, perlu mengembalikan nilai negatif bila parameter \texttt{m1} lebih kecil dari \texttt{m2}, mengembalikan nilai positif apabila kebalikan dari itu, atau mengembalikan nilai 0 (nol) yang artinya \texttt{m1} sama dengan \texttt{m2}.
+
+Kita menggunakan \textit{method} bawaan kelas \texttt{String} untuk melakukan komparasi itu, nama \textit{method}-nya adalah \texttt{compareTo()}.
+
+Hasil keluaran dari kode \texttt{Aplikasi} tersebut akan terlihat seperi berikut :
+
+\begin{lstlisting}
+Sebelum sort:
+-> 19008 : tamami
+-> 19005 : diva
+-> 19003 : nabila
+-> 19001 : peni
+-> 19002 : honda
+-> 19004 : suzuki 
+-> 19006 : mazda
+-> 19007 : toyota
+
+
+Setelah sort:
+=> 19001 : peni
+=> 19002 : honda
+=> 19003 : nabila
+=> 19004 : suzuki
+=> 19005 : diva
+=> 19006 : mazda
+=> 19007 : toyota
+Hasil pencarian data mahasiswa untuk nim 19004 : 3
+\end{lstlisting}
+
+Ini artinya apabila datanya ditemukan, nilai angka yang dikembalikan adalah nomor indeks data dengan posisi data awal adalah 0 (nol).
+
+\section{Kesimpulan}
+
+Bahwa kita dapat memanfaatkan fitur pengurutan dan pencarian dari kelas \texttt{Collections} yang telah disediakan oleh Java.
+
+Untuk mengurutkan data dalam bentuk objek, kita perlu membuat sebuah kelas yang mengimplementasikan \textit{method} \texttt{compare} milik \textit{interface} \texttt{Comparator}, di \textit{method} inilah kita menentukan berdasarkan apa data akan diurutkan.
+
+Kemudian untuk melakukan pencarian pun, kita dapat menggunakan metode pencarian biner yang telah disediakan kelas \texttt{Collections} di Java, namun barisan data yang ingin kita cari darinya perlu kita urutkan terlebih dahulu.
+
+Kelas yang mengimplementasikan \texttt{Comparator} sebaiknya adalah kelas yang sama yang ditujukan untuk melakukan pengurutan data, ataupun pencarian data.
+
+\section{Tugas}
+
+Buatlah sebuah kelas yang mengimplementasikan \texttt{Comparator}, namun kali ini akan digunakan untuk mengurutkan dan mencarikan berdasarkan \textbf{nama}.
