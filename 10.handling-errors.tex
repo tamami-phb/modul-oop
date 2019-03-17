@@ -1,0 +1,104 @@
+\chapter{Handling Errors}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa memahami dan mampu menangani kesalahan yang muncul pada aplikasi yang dibangun menggunakan bahasa pemrograman Java.
+
+\section{Pengantar}
+
+Pada bab sebelumnya kita telah membahas bagaimana sebuah \textit{exception} terproduksi, dan bagaimana cara memperbaiki dengan mengubah kodenya. Adakalanya sebuah kesalahan yang muncul tidak memerlukan perbaikan kode, namun cukup perbaiki data yang diperlukan pada saat proses datanya terjadi.
+
+Pada Bab ini kita akan coba menangkap sebuah \textit{exception} dan menjadikan sebuah informasi pada pengguna untuk memperbaiki \textit{input} datanya agar aplikasi atau program dapat berjalan sebagaimana mestinya.
+
+\section{Praktek}
+
+Untuk menangkap sebuah \textit{exception} kita dapat menggunakan blok perintah berikut :
+
+\begin{lstlisting}
+try {
+...  // blok pertama
+} catch(Exception e) {
+... // blok kedua
+}
+\end{lstlisting}
+
+Setiap perintah yang nantinya dapat menghasilkan \textit{exception} akan kita tempatkan di blok pertama dari kode di atas, kemudian saat \textit{exception} muncul, kita akan melakukan prosesnya di dalam blok kedua.
+
+Bentuk lain adalah seperti berikut ini :
+
+\begin{lstlisting}
+try {
+... // blok pertama
+} catch(Exception e) {
+... // blok kedua
+} finally {
+... // blok ketiga
+}
+\end{lstlisting}
+
+Perbedaannya hanya pada pernyataan \texttt{finally}, dimana dalam kondisi apapun, pernyataan pada blok \texttt{finally} akan selalu di proses. 
+
+Perhatikan contoh kode berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+    try {
+      mhs1.setNim(args[0]);
+      mhs1.setNama(args[1]);
+    } catch(Exception e) {
+      System.err.println("ada kesalahan nim/nama tidak disertakan di parameter");
+      System.out.println("Gunakan : java Aplikasi {nim} {nama}");
+    } 
+
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Kita membuat sebuah blok \texttt{try...catch} pada baris ke-6 sampai ke-13, kita akan melakukan pengisian nilai atribut \texttt{nim} dan \texttt{nama} dari parameter aplikasi pada baris ke-7 dan ke-8, apabila pengguna tidak memberikan parameter apa pun pada aplikasi, maka blok \texttt{catch} akan dijalankan, yaitu menampilkan informasi kesalahan dan bagaimana cara menggunakan perintah aplikasi.
+
+Berbeda dengan tanpa pemberian blok \texttt{try...catch}, aplikasi akan berhenti ketika bertemu dengan kasus yang sama, namun karena kita telah menangkap \texttt{exception} pada blok \texttt{try...catch}, Java menganggap kita sudah menangani \textit{exception} tersebut dan aplikasi berjalan sebagaimana biasanya.
+
+Coba jalankan kode tersebut dan lihat bagaimana hasilnya.
+
+Pemberian pernyataan \texttt{finally} memungkinkan kita memberikan alternatif lain apabila sebuah \textit{exception} tertangkap, atau ada proses lain yang harus dilengkapi setelah proses pada blok \texttt{try...catch} selesai dieksekusi. Perhatikan contoh kode berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+    try {
+      mhs1.setNim(args[0]);
+      mhs1.setNama(args[1]);
+    } catch(Exception e) {
+      System.err.println("ada kesalahan nim/nama tidak disertakan di parameter");
+      System.out.println("Gunakan : java Aplikasi {nim} {nama}");
+    } finally {
+      if(mhs1.getNim().equals("19000")) {
+        mhs1.setNim("19001");
+        mhs1.setNama("na");
+      }
+    }
+
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Perhatikan pada blok \texttt{finally}, saat data pada objek \texttt{mhs1} berupa data \textit{default} dari konstruktor, maka kita mengubahnya dengan mengisikan \texttt{nim} menjadi \texttt{19001} dan \texttt{nama} menjadi \texttt{na}, perhatikan hasil keluaran program yang berbeda dengan sebelumnya.
+
+\section{Kesimpulan}
+
+Dengan menggunakan \textit{exception handling}, aplikasi atau program yang dibuat menjadi lebih bersih, karena kode kesalahan yang dikeluarkan saat kesalahan terjadi tidak lagi serumit sebelumnya, pesan yang dikeluarkan lebih humanis dan diharapkan dapat dimengerti oleh pengguna aplikasi.
+
+\section{Tugas}
+
+Pada kelas \texttt{Mahasiswa}, berikan pengecekan pada saat melakukan pengisian data pada \texttt{nim}, dimana data yang masuk harus berisi angka (dapat dilakukan dengan \texttt{new Integer()} atau \texttt{Integer.parseInt()}), hasil dari kondisi \textit{exception handling} dilemparkan ke luar agar dapat ditangkap pada kelas yang menggunakan.
+
+Kemudian buat sebuah kelas \texttt{Aplikasi} yang memanfaatkan kelas \texttt{Mahasiswa}, dan isikan data \texttt{nim} yang mengandung karakter selain angka, tangkap \textit{exception} ini dan berikan informasi kepada pengguna bahwa data \texttt{nim} yang diberikan harus berupa angka.
