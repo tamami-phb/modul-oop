@@ -36,8 +36,198 @@ Perhatikan bahwa sebuah \textit{exception} muncul akibat perintah tersebut, yang
 
 Informasi \textit{exception} semacam ini akan sering timbul pada program yang kita bangun yang biasanya bersumber dari desain yang kurang lengkap. Namun seiring dengan jam terbang pemrogram, permasalahan seperti ini biasanya akan cepat teratasi.
 
-Untuk \textit{exception} sendiri sebetulnya dapat kita produksi sendiri dari logika kode program yang kita bangun, 
+Untuk \textit{exception} sendiri sebetulnya dapat kita produksi sendiri dari logika kode program yang kita bangun, kita akan coba memproduksi \textit{exception} dimana dari kelas \texttt{Mahasiswa} yang sudah terbentuk objeknya, kita akan seleksi bahwa data \texttt{nim} untuk objek dari kelas \texttt{Mahasiswa} harus sudah terisi, bila belum, kita lemparkan sebagai \textit{exception}. 
+
+Kode pada kelas \texttt{Mahasiswa} yang sudah terbentuk tidak ada perubahan, kita akan membuat implementasinya pada kelas \texttt{Aplikasi} berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+
+    if(mhs1.getNim().equals("19000")) {
+      throw new Exception("Data NIM belum ada");
+    }
+  }
+}
+\end{lstlisting}
+
+Pada kode di atas terlihat bahwa kelas \texttt{Mahasiswa} yang digunakan berasal dari paket \texttt{entitas}, perbedaan lain yang kita lihat adalah adanya pernyataan \texttt{throws Exception} pada baris ke-4, pernyataan ini berhubungan dengan baris ke-8, yang apabila nilai dari \texttt{nim} milik kelas \texttt{Mahasiswa} bernilai \texttt{19000}, artinya belum diisikan, masih berupa nilai \textit{default}, maka kita lemparkan sebagai sebuah \textit{exception} dengan pesan \texttt{Data NIM belum ada}.
+
+\begin{lstlisting}
+MacBook-Pro:test tamami$ java Aplikasi
+Exception in thread "main" java.lang.Exception: Data NIM belum ada
+        at Aplikasi.main(Aplikasi.java:9)
+MacBook-Pro:test tamami$
+\end{lstlisting}
+
+Dari hasil keluaran di atas, \textit{debugging}-nya cukup mudah, kita tinggal perhatikan pada berkas \texttt{Aplikasi.java} pada baris ke-9, kesalahan ini muncul karena belum diisikan, tinggal ubah saja kodenya menjadi seperti berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+    mhs1.setNim("19001");
+
+    if(mhs1.getNim().equals("19000")) {
+      throw new Exception("Data NIM belum ada");
+    }
+
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-6, kita mengisikan \texttt{nim} dengan \texttt{19001}, dan pada baris ke-12 kita mencoba mencetak isinya. Hasilnya, \textit{exception} tersebut sudah tidak dikeluarkan lagi, dan yang tercetak adalah informasi dari objek \texttt{mhs1}.
+
+Kita pun dapat membangun sebuah kelas \textit{Exception} yang akan menampilkan pesan yang kita rancang sendiri dengan cara mewarisi kelas \texttt{Exception} kemudian membuat konstruktornya, berikut contoh kodenya :
+
+\begin{lstlisting}
+package exceptions;
+
+public class ErrorNimException extends Exception {
+
+    public ErrorNimException(String message) {
+        super(message);
+    }
+
+}
+\end{lstlisting}
+
+Kita buat dengan nama \texttt{ErrorNimException} di dalam paket \texttt{exceptions}, kita membuat satu konstruktor saja dengan parameter \texttt{message} di dalamnya, untuk menyimpan detail kesalahannya apa.
+
+Pada kelas \texttt{Aplikasi} pun kita ubah agar menggunakan kelas \texttt{ErrorNimException} yang telah kita buat, berikut kodenya :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+import exceptions.ErrorNimException;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+
+    if(mhs1.getNim().equals("19000")) {
+      throw new ErrorNimException("Data NIM belum ada");
+    }
+    
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-9 kita sudah menggunakan \textit{exception} yang kita bangun sendiri, hasil keluarannya akan terlihat seperti berikut :
+
+\begin{lstlisting}
+MacBook-Pro:test tamami$ java Aplikasi
+Exception in thread "main" exceptions.ErrorNimException: Data NIM belum ada
+        at Aplikasi.main(Aplikasi.java:9)
+MacBook-Pro:test tamami$ 
+\end{lstlisting}
+
+Perhatikan bahwa \textit{exception} akan menghentikan proses aplikasi sehingga perintah \texttt{cetak} pada baris ke-12 tidak akan dieksekusi. Kesalahan ini muncul pada berkas \texttt{Aplikasi.java} pada baris ke-9, cara menyelesaikan \textit{bug} ini hanya tinggal mengisikan \texttt{nim} saja, berikut solusi kodenya :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+import exceptions.ErrorNimException;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+    mhs1.setNim("19001");
+    mhs1.setNama("tamami");
+
+    if(mhs1.getNim().equals("19000")) {
+      throw new ErrorNimException("Data NIM belum ada");
+    }
+
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Hasil keluaran dari kode tersebut akan terlihat seperti berikut :
+
+\begin{lstlisting}
+MacBook-Pro:test tamami$ java Aplikasi
+19001 : tamami
+MacBook-Pro:test tamami$ 
+\end{lstlisting}
 
 \section{Kesimpulan}
 
+Bahwa \textit{exception} muncul karena adanya kesalahan pada saat \textit{runtime}, pada kode program tidak ada kesalahan ketik, namun pada saat berjalannya aplikasi, ada kesalahan-kesalahan yang tidak dapat diproses oleh program sehingga muncul \textit{exception}.
+
+Munculnya \textit{exception} akan menghentikan proses aplikasi sampai kondisi kode diperbaiki.
+
+\textit{Exception} pun dapat kita bangun sendiri yang spesifik sesuai kebutuhan aplikasi yang kita bangun.
+
 \section{Tugas}
+
+Perhatikan kelas \texttt{Mahasiswa} berikut :
+
+\begin{lstlisting}
+package entitas;
+public class Mahasiswa extends Personal {
+
+    private String nim;
+
+    public Mahasiswa() {
+        nim = "19000";
+        setNama("tidak ada");
+    }
+
+    public Mahasiswa(String nim, String nama) {
+        super();
+        this.nim = nim;
+        setNama(nama);
+    }
+
+    public void cetak() {
+        System.out.println(nim + " : " + getNama());
+    }
+
+    /**
+     * @return the nim
+     */
+    public String getNim() {
+        return nim;
+    }
+
+    /**
+     * @param nim the nim to set
+     */
+    public void setNim(String nim) {
+        if(nim.equals("19000")) {
+            
+        }
+        this.nim = nim;
+    }
+    
+}
+\end{lstlisting}
+
+Buatlah sebuah \textit{exception} \texttt{ErrorNamaException} untuk diimplementasikan pada kode berikut :
+
+\begin{lstlisting}
+import entitas.Mahasiswa;
+import exceptions.ErrorNamaException;
+
+public class Aplikasi {
+  public static void main(String args[]) throws Exception {
+    Mahasiswa mhs1 = new Mahasiswa();
+    mhs1.setNim("19001");
+
+    if(mhs1.getNama().equals("tidak ada")) {
+      throw new ErrorNamaException("Data Nama belum ada");
+    }
+
+    mhs1.cetak();
+  }
+}
+\end{lstlisting}
+
+Lalu perbaiki kode di atas agar kesalahan (\textit{exception}) tersebut tidak muncul.
