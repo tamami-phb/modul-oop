@@ -71,3 +71,9 @@
 \contentsline {subsection}{\numberline {8.3.2}Searching}{61}{subsection.8.3.2}
 \contentsline {section}{\numberline {8.4}Kesimpulan}{67}{section.8.4}
 \contentsline {section}{\numberline {8.5}Tugas}{67}{section.8.5}
+\contentsline {chapter}{\numberline {9}Exception dan Debugging}{69}{chapter.9}
+\contentsline {section}{\numberline {9.1}Tujuan}{69}{section.9.1}
+\contentsline {section}{\numberline {9.2}Pengantar}{69}{section.9.2}
+\contentsline {section}{\numberline {9.3}Praktek}{70}{section.9.3}
+\contentsline {section}{\numberline {9.4}Kesimpulan}{74}{section.9.4}
+\contentsline {section}{\numberline {9.5}Tugas}{74}{section.9.5}
