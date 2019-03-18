@@ -2,11 +2,236 @@
 
 \section{Tujuan}
 
-
+Pada Bab ini diharapkan mahasiswa memahami bagaimana menggunakan pustaka yang dapat melakukan akses terhadap \textit{image}, \textit{audio}, dan animasi.
 
 \section{Pengantar}
 
+Ada saatnya kita ingin menampilkan sebuah gambar pada aplikasi yang kita bangun, mungkin untuk menampilkan foto profil dari pengguna, atau gambar dari sebuah katalog, pada bagian ini kita akan coba bagaimana melakukan akses terhadap gambar untuk kemudian ditampilkan pada sebuah aplikasi berbasis GUI (\textit{Graphical User Interface}). 
+
+Untuk saat ini, kita hanya dapat menampilkan gambar dengan tipe data atau ekstensi jpg, gif, atau png.
+
+Untuk audio sendiri pun kita akan coba pada bab ini, bagaimana dengan bahasa pemrograman Java dan pustaka yang telah disediakan mampu untuk memainkan berkas audio dengan format data atau ekstensi AIFC, AIFF, AU, SND, atau WAVE.
+
+Pada bab ini pula kita akan mencoba membuat sebuah animasi sederhana melalui sudut pandang pemrograman berorientasi objek yang mampu Java lakukan.
+
 \section{Praktek}
+
+\subsection{Image}
+
+Untuk memunculkan sebuah gambar pada jendela tentunya kita perlu untuk membuat jendelanya terlebih dahulu, di dalam jendela yang kita buat, kita akan masukkan komponen yang mampu menampilkan sebuah gambar yang kita pilih. 
+
+Perhatikan kode berikut :
+
+\begin{lstlisting}
+import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
+public class Aplikasi {
+  public static void main(String args[]) {
+    JFrame frame = new JFrame();
+  ImageIcon icon = new ImageIcon("img/foto-profile.jpeg");
+  JLabel label = new JLabel(icon);
+  frame.add(label);
+  frame.setDefaultCloseOperation
+         (JFrame.EXIT_ON_CLOSE);
+  frame.pack();
+  frame.setVisible(true);
+  }
+}
+\end{lstlisting}
+
+Perhatikan baris ke-7 dimana kita membuat sebuah instan dari kelas \texttt{JFrame}, ini dimaksudkan kita akan membuat sebuah jendela utama dari aplikasi kita.
+
+Pada baris ke-8, kita memanfaatkan kelas \texttt{ImageIcon} untuk menampung dan menampilkan gambar yang kita pilih. Parameter yang dibutuhkan oleh kelas ini hanyalah sebuah alamat letak berkas gambar tersimpan. Pastikan bahwa alamat dan nama berkas yang tertera di dalam ini benar.
+
+Kemudian agar gambar dapat ditampilkan jendela \texttt{frame}, maka kita membutuhkan komponen \texttt{JLabel} yang akan menampung objek dari \texttt{ImageIcon} dan menampilkannya di layar, seperti deklarasi pada baris ke-9.
+
+Kemudian pada baris ke-10, objek \texttt{label} yang berisi gambar dalam instan kelas \texttt{ImageIcon}, dimasukkan ke dalam jendela \texttt{frame}.
+
+Baris ke-11 dan ke-12 adalah pelengkap kode dimana pada baris ke-11 untuk menjadikan tombol silang atau merah yang ada di pojok kanan atas atau pojok kiri atas jendela berfungsi untuk keluar dari jendela dan menghentikan aplikasi. Kemudian pada baris ke-12 digunakan agar ukuran jendela \texttt{frame} menyesuaikan ukuran isi di dalamnya.
+
+Pada baris ke-14 kita memerintahkan jendela \texttt{frame} untuk muncul ke layar.
+
+\subsection{Audio}
+
+Untuk menjalankan berkas audio, berkas yang dapat didukung oleh Java adalah berkas dengan format AIFC, AIFF, AU, SND, dan WAVE.
+
+Kali ini kita akan mencoba menjalankan berkas dengan format AU dengan menggunakan kelas \texttt{Clip}. Kodenya akan kita pisahkan menjadi 2 (dua) bagian (kelas), kelas pertama akan melakukan tugasnya sebagai \textit{player} sedangkan kelas kedua akan melakukan tugasnya sebagai pusat kontrol aplikasi.
+
+Kita buat kelas yang pertama terlebih dahulu, kodenya akan terlihat seperti berikut :
+
+\begin{lstlisting}
+package audio;
+
+import java.util.*;
+import java.io.*;
+import javax.sound.sampled.*;
+
+public class MyPlayer {
+  private Long currentFrame;
+  private Clip clip;
+  private String status;
+  private AudioInputStream audioInputStream;
+  private String filePath;
+  
+  public MyPlayer(String filePath) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    audioInputStream = AudioSystem.getInputStream(new File(filePath).getAbsoluteFile());
+    clip = AudioSystem.getClip();
+    clip.open(audioInputStream);
+    clip.loop(Clip.LOOP_CONTINUOUSLY);
+    this.filePath = filePath;
+  }
+  
+  public void play() {
+    clip.start();
+    status = "play";
+  }
+  
+  public void pause() {
+    if(status.equals("paused")) {
+      System.out.println("player sudah dalam kondisi pause");
+      return;
+    }
+    this.currentFrame = this.clip.getMicrosecondPosition();
+    clip.stop();
+    status = "paused";
+  }
+  
+  public void resumeAudio() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    if(status.equals("play")) {
+      System.out.println("sedang memutar lagu");
+      return;
+    }
+    clip.close();
+    resetAudioStream();
+    clip.setMicrosecondPosition(currentFrame);
+    this.play();
+  }
+  
+  public void restart() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    clip.stop();
+    clip.close();
+    resetAudioStream();
+    currentFrame = 0L;
+    clip.setMicrosecondPosition(0);
+    this.play();
+  }
+  
+  public void stop() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    currentFrame = 0L;
+    clip.stop();
+    clip.close();
+  }
+  
+  public void jump(long c) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    if(c > 0 && c < clip.getMicrosecondLength()) {
+      clip.stop();
+      clip.close();
+      resetAudioStream();
+      currentFrame = c;
+      clip.setMicrosecondPosition(currentFrame);
+      this.play();
+    }
+  }
+  
+  public void resetAudioStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    clip.open(audioInputStream);
+    clip.loop(Clip.LOOP_CONTINUOUSLY);
+  }
+  
+  public Long getClipLength() {
+    return clip.getMicrosecondLength();
+  }
+}
+\end{lstlisting}
+
+Kodenya sedikit panjang, yang perlu kita perhatikan adalah fitur yang ditawarkan dari kelas \texttt{MyPlayer} ini, perhatikan pada baris ke-14 bahwa konstruktor membutuhkan \textit{path} dari berkas audio yang didukung oleh Java. Di dalam konstruktor kita menyiapkan segala sesuatunya, mulai dari \textit{input stream} yang digunakan untuk membaca dari sebuah berkas, kemudian menyiapkan instan kelas \texttt{Clip} untuk memutar audio, membuka berkas, dan melakukan konfigurasi untuk selalu memutar berkas dengan parameter \texttt{Clip.LOOP\_CONTINUOUSLY}.
+
+Pada blok baris ke-22 sampai ke-25 adalah fitur yang ditawarkan untuk mulai memutar sebuah berkas audio. Di dalamnya kita memerintahkan instan kelas \texttt{Clip} untuk mulai memutarkan berkas audio, kemudian memberikan sebuah status \texttt{play} ke pengguna.
+
+Pada blok baris ke-27 sampai ke-35 adalah fitur untuk menghentikan sejenak pemutaran berkas audio yang sedang berjalan. Sedangkan pada baris ke-37 sampai ke-46 adalah untuk melanjutkan pemutarannya setelah melakukan penghentian sementara pada blok baris sebelumnya.
+
+Pada blok baris ke-48 sampai ke-55 adalah melakukan pemutaran ulang dari posisi awal untuk berkas audio yang sedang dimuat.
+
+Pada blok baris ke-57 sampai ke-61 adalah untuk menghentikan \textit{player} memutar sebuah berkas audio.
+
+\textit{Method} pada blok baris ke-63 sampai ke-72 adalah untuk melompat ke detik tertentu dari bagian berkas audio. Sedangkan blok baris ke-74 sampai ke-77 adalah untuk memuat ulang berkas audio yang sudah ditentukan.
+
+Kemudian kita membuat kelas \texttt{Aplikasi} yang akan menjadi panduan pengguna dalam melakukan operasi pemutaran berkas audio. Berikut adalah kodenya :
+
+\begin{lstlisting}
+import java.io.*;
+import java.util.Scanner;
+import javax.sound.sampled.*;
+import audio.MyPlayer;
+
+public class Aplikasi {
+  private static MyPlayer audioPlayer;
+  
+  public static void main(String args[]) {
+    try {
+      String filePath = "./audio/sample.au";
+      audioPlayer = new MyPlayer(filePath);
+      audioPlayer.play();
+      Scanner sc = new Scanner(System.in);
+      
+      while(true) {
+      System.out.println("\n=== Menu");
+        System.out.println("1. pause");
+        System.out.println("2. resume");
+        System.out.println("3. restart");
+        System.out.println("4. stop");
+        System.out.println("5. Jump to specific time");
+        System.out.print("=> ");
+        int c = sc.nextInt();
+        gotoChoice(c);
+        if(c == 4) break;
+      }
+      sc.close();	
+    } catch(Exception e) {
+      System.out.println("Kesalahan memutar berkas audio");
+      e.printStackTrace();
+    }
+  }
+  
+  private static void gotoChoice(int c) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    switch(c) {
+      case 1: 
+        audioPlayer.pause();
+        break;
+      case 2:
+        audioPlayer.resumeAudio();
+        break;
+      case 3: 
+        audioPlayer.restart();
+        break;
+      case 4:
+        audioPlayer.stop();
+        break;
+      case 5:
+        System.out.println("Masukkan waktu (" + 0 + 
+          ", " + audioPlayer.getClipLength() + ")");
+        Scanner sc = new Scanner(System.in);
+        long c1 = sc.nextLong();
+        audioPlayer.jump(c1);
+        break;
+    }
+  }
+}
+\end{lstlisting}
+
+Pada baris ke-11 kita menyiapkan berkas audio yang akan dijalankan, kemudian membentuk instan dari kelas \texttt{MyPlayer} kemudian menjalankan berkas audio tersebut dengan perintah \texttt{play()}.
+
+Pada baris ke-14, kita menyiapkan \texttt{Scanner} untuk menerima masukkan dari pengguna. Kemudian pada blok baris ke-16 sampai ke-26 adalah untuk menampilkan menu aplikasi.
+
+Hasil masukkan dari pengguna berupa angka akan dikirimkan ke \textit{method} \texttt{gotoChoice} untuk kemudian diproses, apakah berkas akan dimainkan, dihentikan sementara, dijalankan kembali dari posisi penghentian sementara, menghentikan pemutaran audio, atau melompat pada waktu tertentu dari berkas audio yang diputar.
+
+Semua operasi tersebut membutuhkan instan kelas \texttt{MyPlayer} yang sudah dibangun dan dieksekusi setiap fiturnya pada \textit{method} \texttt{gotoChoice()}.
+
+\subsection{Animasi}
+
+
 
 \section{Kesimpulan}
 
