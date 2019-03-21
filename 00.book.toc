@@ -90,5 +90,5 @@
 \contentsline {subsection}{\numberline {11.3.1}Image}{84}{subsection.11.3.1}
 \contentsline {subsection}{\numberline {11.3.2}Audio}{85}{subsection.11.3.2}
 \contentsline {subsection}{\numberline {11.3.3}Animasi}{91}{subsection.11.3.3}
-\contentsline {section}{\numberline {11.4}Kesimpulan}{91}{section.11.4}
-\contentsline {section}{\numberline {11.5}Tugas}{91}{section.11.5}
+\contentsline {section}{\numberline {11.4}Kesimpulan}{95}{section.11.4}
+\contentsline {section}{\numberline {11.5}Tugas}{95}{section.11.5}
