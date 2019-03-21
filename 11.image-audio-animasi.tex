@@ -231,8 +231,98 @@ Semua operasi tersebut membutuhkan instan kelas \texttt{MyPlayer} yang sudah dib
 
 \subsection{Animasi}
 
+Animasi sebetulnya adalah gambar yang berganti secara cepat, pada praktek kali ini kita akan menggunakan sebuah gambar yang nantinya akan dibuat seperti bergerak. Kelas yang pertama adalah kelas \texttt{Board} yang merupakan pewarisan dari kelas \texttt{JPanel}, yang nantinya akan kita masukkan dalam sebuah \textit{window} aplikasi, kemudian untuk frekuensi atau jeda waktu tertentu, objek gambar yang dimasukkan akan bergerak. Berikut adalah isi kode dari kelas \texttt{Board} :
 
+\begin{lstlisting}
+package anim;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+public class Board extends JPanel implements ActionListener {
+  
+  private final int B_WIDTH = 350;
+  private final int B_HEIGHT = 350;
+  private final int INITIAL_X = -40;
+  private final int INITIAL_Y = -40;
+  private final int DELAY = 25;
+  
+  private Image star;
+  private Timer timer;
+  private int x, y;
+  
+  public Board() {
+  	initBoard();
+  }
+  
+  private void initBoard() {
+    setBackground(Color.BLACK);
+    setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+    
+    loadImage();
+    
+    x = INITIAL_X;
+    y = INITIAL_Y;
+    
+    timer = new Timer(DELAY, this);
+    timer.start();
+  }
+  
+  private void loadImage() {
+    ImageIcon ii = new ImageIcon("anim/star.png");
+    star = ii.getImage();
+  }
+  
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    drawStar(g);
+  }
+  
+  private void drawStar(Graphics g) {
+    g.drawImage(star, x, y, this);
+    Toolkit.getDefaultToolkit().sync();
+  }
+  
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    x++; y++;
+    if(y > B_HEIGHT) {
+      y = INITIAL_Y;
+      x = INITIAL_X;
+    }
+    repaint();
+  }
+  
+}
+\end{lstlisting}
+
+Perhatikan pada konstruktor di baris ke-26, di dalamnya langsung memanggil sebuah \textit{method} \texttt{initBoard()} yang fungsinya untuk mempersiapkan objek dari \texttt{Board} apabila dibentuk sebuah instan.
+
+Di dalam \textit{method} \texttt{initBoard()}, kita menyiapkan warna latar belakang berupa warna hitam, dan membuat ukuran jendelanya sebesar \texttt{B\_WIDTH} x \texttt{B\_HEIGHT}. Kemudian memuat sebuah gambar dengan memanggil \textit{method} \texttt{loadImage()}.
+
+Dalam \textit{method} \texttt{initBoard()} pun kita menyiapkan \texttt{Timer} dengan 2 (dua) parameter, parameter pertama adalah \texttt{DELAY}, dimana nantinya akan ada jeda waktu selama \texttt{DELAY} dalam satuan mikro-detik, kemudian parameter kedua adalah \texttt{this}, yang menunjuk pada \texttt{ActionListener}, karena nantinya \texttt{timer} akan melakukan iterasi terus menerus pada \textit{method} \texttt{actionPerformed()} milik kelas \texttt{ActionListener} dengan jeda \texttt{DELAY}.
+
+\textit{Method} \texttt{actionPerformed()} telah kita \textit{override} oleh kelas \texttt{Board}, sehingga nantinya \texttt{timer} akan dilakukan iterasi atau perulangan terus-menerus terhadap \textit{method} \texttt{actionPerformed()} ini.
+
+Dalam \textit{method} \texttt{actionPerformed()}, kita mengubah posisi \texttt{x} dan \texttt{y} dan kemudian memanggil \textit{method} \texttt{repaint()}, dimana \textit{method} \texttt{repaint()} ini sebetulnya akan memanggil \textit{method} \texttt{paintComponent()}. 
+
+Di dalam \textit{method} \texttt{paintComponent()} kita membentuk ulang tampilan \texttt{Board} dengan memanggil \textit{method} \texttt{paintComponent} milik \texttt{JPanel} dengan pernyataan \texttt{super.paintComponent()} pada baris ke-50, kemudian menggambar ulang \texttt{star} dengan memanggil \textit{method} \texttt{drawStar()} pada baris ke-51.
+
+Hasil akhirnya pada saat program kita jalankan, akan ada gambar bintang yang bergerak dari pojok kiri atas ke pojok kiri bawah.
 
 \section{Kesimpulan}
 
+Bahwa implementasi penggunaan berkas gambar, audio, dan pembuatan animasi dapat dilakukan pada bahasa pemrograman Java hanya dengan paket yang sudah terintegrasi dalam JDK, walau memang kondisi format berkas yang didukung masih terbatas.
+
 \section{Tugas}
+
+Pada praktek pembuatan animasi, buatlah agar gambar bintang bergerak dari kiri ke kanan.
