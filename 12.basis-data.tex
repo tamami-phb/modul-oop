@@ -1,0 +1,523 @@
+\chapter{Basis Data}
+
+\section{Tujuan}
+
+Pada Bab ini diharapkan mahasiswa mampu memahami implementasi pemrograman berorientasi objek untuk melakukan integrasi bahasa pemrograman Java dengan sistem basis data.
+
+\section{Pengantar}
+
+Untuk melakukan integrasi dengan sistem basis data, kita membutuhkan JDBC (\textit{Java DataBase Connectivity}) \textit{driver}, \textit{driver} ini akan spesifik pada jenis basis data yang digunakan, karena hal inilah yang membuat performa koneksi ke sistem basis data menjadi sangat baik, dan kita tidak perlu melakukan pemasangan perangkat lunak yang lain untuk melakukan koneksinya.
+
+Maksudnya adalah, apabila kita ingin melakukan koneksi ke sistem basis data MySQL, maka kita membutuhkan JDBC \textit{driver} yang spesifik untuk sistem basis data MySQL, apabila ingin melakukan koneksi ke sistem basis data PostgreSQL, maka kita membutuhkan JDBC \textit{driver} untuk PostgreSQL.
+
+Pada praktek kali ini kita akan mencoba melakukan operasi koneksi ke sistem basis data, kemudian melakukan operasi tambah data, ubah data, dan hapus data pada sistem basis data MySQL atau MariaDB dengan bahasa pemrograman Java.
+
+\section{Praktek}
+
+Yang perlu disiapkan untuk melakukan koneksi dengan sistem basis data adalah JDBC \textit{driver}, pada modul ini, sistem basis data yang terpasang adalah MariaDB versi 10.3.10, JDBC \textit{driver} yang digunakan untuk koneksi ke MariaDB menggunakan versi 2.4.1 yang dapat diunduh di alamat \url{https://mariadb.com/kb/en/library/about-mariadb-connector-j/}.
+
+Seperti biasa, kita akan membuat 2 (dua) kelas, yaitu kelas \texttt{Koneksi} yang akan mengatur lalu lintas data dari aplikasi ke sistem basis data, dan sebaliknya. Lalu kelas yang kedua adalah kelas \texttt{Aplikasi} yang nantinya kita gunakan untuk uji coba program.
+
+\subsection{Koneksi}
+
+Untuk memastikan bahwa sistem basis data dan aplikasi yang akan kita bangun telah menggunakan JDBC \textit{driver} yang tepat, kita perlu melakukan tes koneksi. 
+
+Pertama kita buat dahulu kelas \texttt{Koneksi} yang berada dalam paket \texttt{db} dengan kode seperti berikut :
+
+\begin{lstlisting}
+package db;
+
+import java.sql.*;
+
+public class Koneksi {
+  private Connection connection;
+  
+  public Koneksi() throws SQLException {
+    openConnection();
+  }
+  
+  public void openConnection() throws SQLException {
+    connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/app?user=root&password=rahasia");
+  }
+  
+  public void closeConnection() throws SQLException {
+    connection.close();
+  }
+}
+\end{lstlisting}
+
+
+
+Untuk sementara cukup seperti itu, karena kita ingin memastikan dahulu apakah JDBC \textit{driver} sudah cocok dan dapat digunakan. 
+
+Kita membutuhkan instan dari kelas \texttt{java.sql.Connection} untuk melakukan sambungan dengan sistem basis data, pada konstruktor yang kita bentuk, kita memanggil \textit{method} \texttt{openConnection()} karena kita akan mencoba membuka sambungan dengan sistem basis data, pembentukan \textit{method} \texttt{openConnection()} pun bertujuan agar nantinya kelas di luar koneksi mudah untuk melakukan buka tutup koneksi.
+
+Pada \textit{method} \texttt{openConnection()}, kita memanggil sebuah koneksi dari kelas \texttt{DriverManager} seperti pada baris ke-13, disana disertakan parameter untuk melakukan koneksi atau sambungan ke sistem bais data, dimana ada nama \textit{host} atau peladen dari MariaDB, nomor \textit{port}, serta \textit{username} dan \textit{password} untuk melakukan koneksi ke basis data MariaDB.
+
+Sekarang buatlah kelas \texttt{Aplikasi} seperti berikut :
+
+\begin{lstlisting}
+import db.*;
+import java.sql.*;
+
+public class Aplikasi {
+
+  private static Koneksi koneksi;
+
+  private static void main(String args[]) {
+    try {
+      koneksi = new Koneksi();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+  }
+  
+}
+\end{lstlisting}
+
+Di kelas \texttt{Aplikasi} kita melakukan \textit{import} dari paket \texttt{db} untuk kelas \texttt{Koneksi} dan dari paket \texttt{java.sql} untuk kelas \texttt{SQLException}.
+
+Kita deklarasikan objek dari kelas \texttt{Koneksi} sebagai \texttt{static} agar dapat langsung digunakan pada \textit{method} \texttt{main}, kemudian kita coba lakukan pemanggilan konstruktor dari kelas \texttt{Koneksi}, bila berhasil, maka tidak akan ada pesan apa pun yang muncul, namun bila gagal, pesan \texttt{Koneksi gagal terjalin.} akan muncul.
+
+Untuk melakukan kompilasi masih sama seperti biasanya, yaitu dengan perintah berikut :
+
+\begin{lstlisting}
+$ javac Aplikasi.java
+\end{lstlisting}
+
+Sedangkan untuk menjalankan aplikasi kita perlu menyertakan berkas \texttt{jar} JDBC \textit{driver} yang kita gunakan. Sehingga perintahnya menjadi seperti berikut :
+
+\begin{lstlisting}
+$ java -classpath .:mariadb-java-client-2.4.1.jar Aplikasi
+\end{lstlisting}
+
+Maksudnya adalah mendeklarasikan \textit{classpath} di direktori yang aktif, dan di berkas JDBC \textit{driver} milik MariaDB.
+
+\textit{Classpath} ini sebetulnya adalah tanda yang memberitahu kepada Java di kandar atau berkas mana saja Java dapat mencari kelas-kelas yang digunakan dalam program atau aplikasi.
+
+Sekarang kita coba ubah sedikit kelas \texttt{Koneksi} dan kelas \texttt{Aplikasi} agar dapat memunculkan data yang tersimpan dalam basis data, tentunya dalam basis data harus terisi setidaknya satu tabel dan satu data.
+
+Tabel yang disiapkan dalam modul ini adalah tabel \texttt{mahasiswa} dengan struktur sebagai berikut :
+
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{| l | l | l |}
+\hline
+\textit{\textbf{Field}} & \textbf{Tipe Data} & \textbf{Keterangan} \\
+\hline \hline
+nim & varchar(10) & primary key \\
+\hline
+nama & varchar(200) & \\
+\hline
+kelas & varchar(5) & \\
+\hline
+\end{tabular}
+\caption{Struktur Tabel Mahasiswa}
+\end{center}
+\end{table}
+
+Data contoh yang dimasukkan dalam tabel tersebut adalah seperti berikut :
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{| l | l | l |}
+\hline
+\textbf{nim} & \textbf{nama} & \textbf{kelas} \\
+\hline \hline
+19001 & tamami & VA \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Perubahan yang kita lakukan pada kelas \texttt{Koneksi} adalah seperti berikut ini :
+
+\begin{lstlisting}
+package db;
+
+import java.sql.*;
+
+public class Koneksi {
+  
+  private Connection connection;
+  private Statement statement;
+  
+  public Koneksi() {}  
+  
+  public void openConnection() throws SQLException {
+    connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/app?user=root&password=rahasia");
+    statement = connection.createStatement();
+  }
+  
+  public void closeConnection() throws SQLException {
+    connection.close();
+  }
+  
+  public ResultSet executeQuery(String sql) throws SQLException {
+    ResultSet result;
+    openConnection();
+    result = statement.executeQuery(sql);
+    closeConnection();
+    return result;
+  }
+  
+}
+\end{lstlisting}
+
+Perubahan yang kita lakukan ada pada konstruktor \texttt{Koneksi()}, dimana kita menghilangkan pemanggilan \textit{method} \texttt{openConnection()}. \textit{Method} \texttt{openConnection()} sendiri kita gunakan di dalam \textit{method} \texttt{executeQuery()} pada saat melakukan \textit{query} \texttt{select}. 
+
+Jadi kelas \texttt{Statement} menyediakan 2 (dua) cara untuk melakukan \textit{query} yaitu apabila ingin menggunakan \textit{query} \texttt{select}, maka akan memanggil \textit{method} \texttt{executeQuery()}, yang akan kita bahas pada bagian ini, dan cara yang lain adalah menggunakan \textit{method} \texttt{executeUpdate()} yang nantinya digunakan untuk \textit{query} \texttt{insert, update} dan \texttt{delete}.
+
+Kelas \texttt{Koneksi} sudah kita siapkan, kita perlu melakukan perubahan pada kelas \texttt{Aplikasi} menjadi seperti berikut :
+
+\begin{lstlisting}
+import db.*;
+import java.sql.*;
+
+public class Aplikasi {
+
+  private static Koneksi koneksi;
+  
+  public static void main(String args[]) {
+    try {
+      koneksi = new Koneksi();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+    printData();
+  }
+  
+  private static void printData() {
+    try {
+      koneksi.openConnection();
+      ResultSet rs = koneksi.executeQuery("select * from mahasiswa");
+      while(rs.next()) {
+        System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
+      }
+      koneksi.closeConnection();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+  }
+  
+}
+\end{lstlisting}
+
+Pada \textit{method} \texttt{main()} kita menambahkan pernyataan untuk memanggil \textit{method} \texttt{printData()}, \textit{method} ini pun bersifat \texttt{static} karena agar dapat kita panggil langsung dari \textit{method} \texttt{main()}.
+
+Dalam \textit{method} \texttt{printData()} kita menemukan pemanggilan \textit{method} \texttt{openConnection()} dan \texttt{closeConnection()} milik kelas \texttt{Koneksi}, kemudian ada pemanggilan terhadap \textit{method} \texttt{executeQuery()} untuk mengambil data (\textit{select}) dari sistem basis data. 
+
+Hasil dari pengambilan data pada basis data akan tersimpan dalam objek \texttt{ResultSet}, dimana datanya dapat diambil berdasarkan indeks, sebagai contoh pada baris ke-22, ada pernyataan \texttt{rs.getString(1)} dengan maksud mengambil data dari \textit{field} pertama, yaitu \texttt{nim} dalam bentuk tipe data \texttt{String} atau teks, berikutnya sama saja, saat ada pernyataan \texttt{rs.getString(2)}, maka akan diambilkan data dari \textit{field} \texttt{nama} dalam tipe data \texttt{String}.
+
+Hasil dari program di atas tentu saja akan menampilkan data dari sistem basis data. Berikut hasilnya :
+
+\begin{lstlisting}
+19001 : tamami : VA
+\end{lstlisting}
+
+\subsection{Tambah Data}
+
+Seperti dijelaskan sebelumnya bahwa untuk melakukan penambahan, pengubahan dan penghapusan data, kita membutuhkan \textit{method} \texttt{executeUpdate()} milik \texttt{Statement}, maka kita perlu melakukan perubahan pada kelas \texttt{Koneksi} yang kita buat, berikut hasil perubahannya :
+
+\begin{lstlisting}
+package db;
+
+import java.sql.*;
+
+public class Koneksi {
+  
+  private Connection connection;
+  private Statement statement;
+  
+  public Koneksi() {}  
+  
+  public void openConnection() throws SQLException {
+    connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306/app?user=root&password=rahasia");
+    statement = connection.createStatement();
+  }
+  
+  public void closeConnection() throws SQLException {
+    connection.close();
+  }
+  
+  public ResultSet executeQuery(String sql) throws SQLException {
+    ResultSet result;
+    openConnection();
+    result = statement.executeQuery(sql);
+    closeConnection();
+    return result;
+  }
+  
+  public int executeUpdate(String sql) throws SQLException {
+    int result;
+    openConnection();
+    result = statement.executeUpdate(sql);
+    closeConnection();
+    return result;
+  }
+  
+}
+\end{lstlisting}
+
+Kelas \texttt{Koneksi} ini memiliki \textit{method} baru, yaitu \texttt{executeUpdate()} yang fungsinya adalah untuk melakukan eksekusi \textit{query} yang mempengaruhi kondisi data pada sistem basis data seperti \texttt{insert}, \texttt{update}, dan \texttt{delete}.
+
+Selanjutnya kita kembali ke kelas \texttt{Aplikasi}, berikut adalah perubahan yang kita lakukan untuk melakukan tambah data pada sistem basis data :
+
+\begin{lstlisting}
+import db.*;
+import java.sql.*;
+
+public class Aplikasi {
+
+  private static Koneksi koneksi;
+  
+  public static void main(String args[]) {
+    try {
+      koneksi = new Koneksi();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+    printData();
+    
+    System.out.println("\nTambah data");
+    try {
+      koneksi.openConnection();
+      int tambah = koneksi.executeUpdate("insert into mahasiswa(nim,nama,kelas) values('19002', 'diva', 'VB')");
+      koneksi.closeConnection();
+      System.out.println("data bertambah : " + tambah);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat tambah data");
+    }
+    System.out.println("datanya: ");
+    printData();
+  }
+  
+  private static void printData() {
+    try {
+      koneksi.openConnection();
+      ResultSet rs = koneksi.executeQuery("select * from mahasiswa");
+      while(rs.next()) {
+        System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
+      }
+      koneksi.closeConnection();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+  }
+  
+}
+\end{lstlisting}
+
+Kita hanya menambahkan blok baris ke-16 sampai ke-27, hal yang berhubungan dengan \texttt{openConnection()}, \texttt{executeUpdate()}, dan \texttt{closeConnection()} kita masukkan dalam blok \texttt{try...catch} untuk kita tangkap eksepsinya, perhatikan bahwa hasil pemanggilan \texttt{executeUpdate()} pada baris ke-19 akan disimpan dalam variabel \texttt{tambah} yang kemudian ditampilkan ke layar pada baris ke-21.
+
+Berbeda dengan \textit{query} \texttt{select} yang menghasilkan limpahan data dalam bentuk \texttt{ResultSet}, hasil kembalian operasi \texttt{insert}, \texttt{update}, dan \texttt{delete} akan memberikan nilai integer (angka bulat), apabila hasilnya lebih dari 0 (nol), maka ada perubahan data sebanyak \texttt{n} \textit{record}, tentu saja apabila hasilnya adalah 0 (nol) artinya tidak ada data yang berubah dalam basis data.
+
+Hasil yang ditampilkan ke layar akan terlihat seperti berikut :
+
+\begin{lstlisting}
+19001 : tamami : VA
+
+tambah data
+data bertambah : 1
+datanya:
+19001 : tamami : VA
+19002 : diva : VB
+\end{lstlisting}
+
+\subsection{Ubah Data}
+
+Seperti bagian penambahan data, karena \textit{method} yang digunakan sama, yaitu \texttt{executeUpdate()}, maka kita hanya mengubah pada kelas \texttt{Aplikasi} seperti berikut :
+
+\begin{lstlisting}
+import db.*;
+import java.sql.*;
+
+public class Aplikasi {
+
+  private static Koneksi koneksi;
+  
+  public static void main(String args[]) {
+    try {
+      koneksi = new Koneksi();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+    printData();
+    
+    System.out.println("\nTambah data");
+    try {
+      koneksi.openConnection();
+      int tambah = koneksi.executeUpdate("insert into mahasiswa(nim,nama,kelas) values('19002', 'diva', 'VB')");
+      koneksi.closeConnection();
+      System.out.println("data bertambah : " + tambah);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat tambah data");
+    }
+    System.out.println("datanya: ");
+    printData();
+    
+    System.out.println("\nUbah data");
+    try {
+      koneksi.openConnection();
+      int ubah = koneksi.executeUpdate("update mahasiswa set kelas='VC' where nim='19002'");
+      koneksi.closeConnection();
+      System.out.println("data berubah : " + ubah);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat ubah data");
+    }
+    System.out.println("datanya: ");
+    printData();
+  }
+  
+  private static void printData() {
+    try {
+      koneksi.openConnection();
+      ResultSet rs = koneksi.executeQuery("select * from mahasiswa");
+      while(rs.next()) {
+        System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
+      }
+      koneksi.closeConnection();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+  }
+  
+}
+\end{lstlisting}
+
+Dengan asumsi data bahwa \texttt{nim 19002} masih tersimpan dalam basis data karena praktek sebelumnya, maka hasil keluaran dari perubahan kode tersebut adalah seperti berikut :
+
+\begin{lstlisting}
+19001 : tamami : VA
+
+tambah data
+data bertambah : 1
+datanya:
+19001 : tamami : VA
+19002 : diva : VB
+
+Ubah data
+data berubah : 1
+datanya:
+19001 : tamami : VA
+19002 : diva : VC
+\end{lstlisting}
+
+Data \texttt{kelas} untuk \texttt{nim 19002} telah berubah.
+
+\subsection{Hapus Data}
+
+Seperti kedua operasi sebelumnya, yaitu tambah dan ubah data, hapus data pun akan menggunakan \textit{method} yang sama, yaitu \texttt{executeUpdate()}. Berikut adalah perubahan pada kelas \texttt{Aplikasi} :
+
+\begin{lstlisting}
+import db.*;
+import java.sql.*;
+
+public class Aplikasi {
+
+  private static Koneksi koneksi;
+  
+  public static void main(String args[]) {
+    try {
+      koneksi = new Koneksi();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+    printData();
+    
+    System.out.println("\nTambah data");
+    try {
+      koneksi.openConnection();
+      int tambah = koneksi.executeUpdate("insert into mahasiswa(nim,nama,kelas) values('19002', 'diva', 'VB')");
+      koneksi.closeConnection();
+      System.out.println("data bertambah : " + tambah);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat tambah data");
+    }
+    System.out.println("datanya: ");
+    printData();
+    
+    System.out.println("\nUbah data");
+    try {
+      koneksi.openConnection();
+      int ubah = koneksi.executeUpdate("update mahasiswa set kelas='VC' where nim='19002'");
+      koneksi.closeConnection();
+      System.out.println("data berubah : " + ubah);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat ubah data");
+    }
+    System.out.println("datanya: ");
+    printData();
+    
+    System.out.println("\nHapus data");
+    try {
+      koneksi.openConnection();
+      int hapus = koneksi.executeUpdate("delete from mahasiswa where nim='19002'");
+      koneksi.closeConnection();
+      System.out.println("data terhapus : " + hapus);
+    } catch(SQLException e) {
+      System.err.println("Kesalahan SQL saat hapus data");
+    }
+    System.out.println("datanya:");
+    printData();
+  }
+  
+  private static void printData() {
+    try {
+      koneksi.openConnection();
+      ResultSet rs = koneksi.executeQuery("select * from mahasiswa");
+      while(rs.next()) {
+        System.out.println(rs.getString(1) + " : " + rs.getString(2) + " : " + rs.getString(3));
+      }
+      koneksi.closeConnection();
+    } catch(SQLException e) {
+      System.err.println("Koneksi gagal terjalin.");
+    }
+  }
+  
+}
+\end{lstlisting}
+
+Seperti sebelumnya, diasumsikan data dengan \texttt{nim 19002} masih ada dari praktek sebelumnya, hasil keluaran yang didapatkan akan terlihat seperti berikut :
+
+\begin{lstlisting}
+19001 : tamami : VA
+
+tambah data
+data bertambah : 1
+datanya:
+19001 : tamami : VA
+19002 : diva : VB
+
+Ubah data
+data berubah : 1
+datanya:
+19001 : tamami : VA
+19002 : diva : VC
+
+Hapus data
+data terhapus : 1
+datanya:
+19001 : tamami : VA
+\end{lstlisting}
+
+Data dengan \texttt{nim 19002} telah terhapus dari sistem basis data.
+
+\section{Kesimpulan}
+
+Bahwa untuk melakukan koneksi dengan sistem basis data dari bahasa pemrograman Java, kita memerlukan JDBC \textit{driver} yang spesifik untuk sistem basis data yang digunakan. 
+
+Tahapan yang perlu dilakukan untuk melakukan akses data pada sistem basis data dilakukan dengan langkah berikut :
+
+\begin{enumerate}
+\item Siapkan koneksi (\texttt{Connection})
+\item Buka koneksi ke sistem basis data (\texttt{DriverManager.getConnection()})
+\item Siapkan statement (\texttt{Statement})
+\item Jalankan \textit{query} (\texttt{executeQuery()} atau \texttt{executeUpdate()})
+\item Ambil hasilnya
+\end{enumerate}
+
+\section{Tugas}
+
+Lakukan praktek di atas namun dengan menggunakan sistem basis data PostgreSQL.
